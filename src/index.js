@@ -1,12 +1,19 @@
-// import express from 'express';
-// import React from 'react';
-const express = require('express')
+import express from 'express';
+import Home from './containers/Home/index.js'
+import ReactDOMServer from 'react-dom/server';
+import React from 'react';
+// const express = require('express')
+// const Home = require('./containers/Home/index.js')
+
 const app = express();
-const Home = require('./containers/Home/index.js')
+app.use(express.static('public'))
+
 
 app.get('/', function(req, res) {
     res.send(
-        `<div>123</div>`
+        `<div>${ReactDOMServer.renderToString(<Home />)}</div>
+        <script src='/index.js'></script>
+        `
     );
 });
 app.listen(3000)
