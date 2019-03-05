@@ -11,7 +11,7 @@ app.use(express.static('public'))
 
 app.get('/', function(req, res) {
     res.send(
-        `<div>${ReactDOMServer.renderToString(<Home />)}</div>
+        `<div id='root'>${ReactDOMServer.renderToString(<Home />)}</div>
         <script src='/index.js'></script>
         `
     );

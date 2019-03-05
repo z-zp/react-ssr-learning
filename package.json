@@ -5,9 +5,9 @@
   "main": "index.js",
   "scripts": {
     "dev": "npm-run-all --parallel dev:**",
-    "start": "node ./src/index.js",
-    "dev:start1": "nodemon node ./build/bundle.js",
-    "dev:build": "webpack --config webpack.config.js --watch"
+    "dev:start": "nodemon node ./build/bundle.js",
+    "dev:build:server": "webpack --config webpack.server.js --watch",
+    "dev:build:client": "webpack --config webpack.client.js --watch"
   },
   "author": "",
   "license": "ISC",
