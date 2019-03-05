@@ -1,30 +1,15 @@
 const path = require('path')
 const nodeExtrenals = require('webpack-node-externals')
-module.exports = {
+const merge = require('webpack-merge')
+const config = require('./webpack.base.js')
+const serverConfig = {
     target:'node',
     mode:'development',
-    entry:'./src/index.js',
+    entry:'./server/index.js',
     output:{
         filename:'bundle.js',
         path: path.resolve(__dirname,'build')
     },
     externals:[nodeExtrenals()],
-    module: {
-        rules:[
-            {
-                test:/\.js?$/,
-                loader:'babel-loader',
-                exclude:'/node_modules/',
-                options:{
-                    presets:[
-                        'react','stage-0',['env',{
-                            targets:{
-                                browsers:['last 2 version']
-                            }
-                        }]
-                    ]
-                }
-            }
-        ]
-    }
 }
+module.exports = merge(config,serverConfig)

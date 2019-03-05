@@ -1,5 +1,5 @@
 import express from 'express';
-import Home from './containers/Home/index.js'
+import Home from '../src/containers/Home/index.js'
 import ReactDOMServer from 'react-dom/server';
 import React from 'react';
 // const express = require('express')
