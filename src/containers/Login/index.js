@@ -5,13 +5,13 @@ export default class Home extends Component {
     }
     onMouseDown=()=>{
         this.props.history.push({
-            pathname:'./login'
+            pathname:'./'
         })
     }
     render(){
         return( 
         <div onMouseDown={()=>{this.onMouseDown()}}>
-            <h3>Hello, ssr123</h3>
+            <h3>Hello, login</h3>
             <button className={'hellobtn'} onClick={()=>{alert('hello')}}>点我</button>
         </div>
         )
