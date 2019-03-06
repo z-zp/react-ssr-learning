@@ -1,11 +1,15 @@
 import React from 'react'
 import { Route } from 'react-router-dom'
 import { Provider } from 'react-redux'
-import { createStore } from 'redux'
+import { createStore,applyMiddleware} from 'redux'
+import createSagaMiddleware from 'redux-saga'
 import Home from './containers/Home'
 import Login from './containers/Login'
 import reducer from './redux'
-const store = createStore(reducer)
+import rootSaga from './saga'
+const sagaMiddleware = createSagaMiddleware()
+const store = createStore(reducer,applyMiddleware(sagaMiddleware))
+sagaMiddleware.run(rootSaga)
 export default (
     <Provider store={store}>
         <div>
