@@ -22,3 +22,17 @@ npm run dev
 ```
 npm i webpack-merge
 ```
+```
+options:{
+    presets:[
+        'react','env','stage-0'
+    ]
+}
+```
+env已经囊括了es2015,es2016等配置，所以写了这一个，其他的就不再需要了，
+stage-0，它包含stage-1, stage-2以及stage-3的所有功能，同时还另外支持如下两个功能插件：
+* transform-do-expressions
+* transform-function-bind
+
+对ES7一些提案的支持，要写在env后面，否则会报错Missing class properties transform
+
