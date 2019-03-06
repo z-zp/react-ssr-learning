@@ -1,20 +1,19 @@
-import React,{Component} from 'react'
+import React, { Component } from 'react'
 import Header from '../../conponents/Header'
 export default class Home extends Component {
-    constructor(props){
-        super(props)
-    }
-    render(){
-        const {pathname} = this.props.location
-        console.log(this.props)
-        return(
+  constructor(props) {
+    super(props)
+  }
+  render() {
+    const { pathname } = this.props.location
+    return (
+      <div>
+        <Header pathname={pathname} />
         <div>
-        <Header pathname={pathname}/> 
-        <div>
-            <h3>Hello, ssr123</h3>
-            <button className={'hellobtn'} onClick={()=>{alert('hello')}}>点我</button>
+          <h3>Hello, ssr123</h3>
+          <button className={'hellobtn'} onClick={() => { alert('hello') }}>点我</button>
         </div>
-        </div>
-        )
-    }
+      </div>
+    )
+  }
 }
