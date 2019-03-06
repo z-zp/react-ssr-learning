@@ -1,63 +1,68 @@
 import React, { Component } from 'react'
 import Header from '../../conponents/Header'
-import { connect} from 'react-redux'
+import { connect } from 'react-redux'
 class Home extends Component {
   constructor(props) {
     super(props)
-    this.state={
-      loading:''
+    this.state = {
+      loading: ''
     }
   }
-  componentDidUpdate(prevProps){
+  componentDidUpdate(prevProps) {
     const nextProps = this.props
-    if(!prevProps.add.fetching && nextProps.add.fetching){
+
+    if (!prevProps.add.fetching && nextProps.add.fetching) {
       this.setState({
-        loading:'loading ...'
+        loading: 'loading ...'
       })
     }
-    if(prevProps.add.fetching && !nextProps.add.fetching){
-      if(!prevProps.add.error && !nextProps.add.error){
+
+    if (prevProps.add.fetching && !nextProps.add.fetching) {
+
+      if (!prevProps.add.error && !nextProps.add.error) {
         this.setState({
-          loading:'loading success'
+          loading: 'loading success'
         })
       }
-      if(!prevProps.add.error && nextProps.add.error){
+
+      if (!prevProps.add.error && nextProps.add.error) {
         this.setState({
-          loading:'loading error'
+          loading: 'loading error'
         })
       }
     }
-
   }
-  onClick=()=>{
-    this.props.addAction({type:'ADD_NUMBER_REQ'})
+
+
+  onClick = () => {
+    this.props.addAction({ type: 'ADD_NUMBER_REQ' })
   }
 
   render() {
     const { pathname } = this.props.location
-    const {number} = this.props.add
-    const {loading} = this.state
+    const { number } = this.props.add
+    const { loading } = this.state
     return (
       <div>
         <Header pathname={pathname} />
         <div>
           <h3>{number}</h3>
           <div>{this.state.loading}</div>
-          <button className={'hellobtn'} onClick={() => {this.onClick()}}>点我</button>
+          <button className={'hellobtn'} onClick={() => { this.onClick() }}>点我</button>
         </div>
       </div>
     )
   }
 }
-const mapStateToProps = (state)=>{
+const mapStateToProps = (state) => {
   return {
-    add:state.add,
-    number:state.add.number
+    add: state.add,
+    number: state.add.number
   }
 }
-const mapDispatchToProps = (dispatch)=>{
+const mapDispatchToProps = (dispatch) => {
   return {
-    addAction: (...arg)=>dispatch(...arg),
+    addAction: (...arg) => dispatch(...arg),
   }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Home)

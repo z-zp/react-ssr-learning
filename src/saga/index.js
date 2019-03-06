@@ -8,7 +8,7 @@ export function* incrementAsync() {
         },1000)
       })
   })
-
+  console.log(number)
   if(number){
       return yield put({type:'ADD_NUMBER_SUC',number})
   }else{

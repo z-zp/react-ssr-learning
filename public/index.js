@@ -422,6 +422,882 @@ eval("/**\n * Copyright (c) 2013-present, Facebook, Inc.\n *\n * This source cod
 
 /***/ }),
 
+/***/ "./node_modules/ramda/src/any.js":
+/*!***************************************!*\
+  !*** ./node_modules/ramda/src/any.js ***!
+  \***************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nvar _curry2 = __webpack_require__(/*! ./internal/_curry2 */ \"./node_modules/ramda/src/internal/_curry2.js\");\nvar _dispatchable = __webpack_require__(/*! ./internal/_dispatchable */ \"./node_modules/ramda/src/internal/_dispatchable.js\");\nvar _xany = __webpack_require__(/*! ./internal/_xany */ \"./node_modules/ramda/src/internal/_xany.js\");\n\n/**\n * Returns `true` if at least one of elements of the list match the predicate,\n * `false` otherwise.\n *\n * Dispatches to the `any` method of the second argument, if present.\n *\n * Acts as a transducer if a transformer is given in list position.\n *\n * @func\n * @memberOf R\n * @since v0.1.0\n * @category List\n * @sig (a -> Boolean) -> [a] -> Boolean\n * @param {Function} fn The predicate function.\n * @param {Array} list The array to consider.\n * @return {Boolean} `true` if the predicate is satisfied by at least one element, `false`\n *         otherwise.\n * @see R.all, R.none, R.transduce\n * @example\n *\n *      var lessThan0 = R.flip(R.lt)(0);\n *      var lessThan2 = R.flip(R.lt)(2);\n *      R.any(lessThan0)([1, 2]); //=> false\n *      R.any(lessThan2)([1, 2]); //=> true\n */\nmodule.exports = _curry2(_dispatchable(['any'], _xany, function any(fn, list) {\n  var idx = 0;\n  while (idx < list.length) {\n    if (fn(list[idx])) {\n      return true;\n    }\n    idx += 1;\n  }\n  return false;\n}));\n\n//# sourceURL=webpack:///./node_modules/ramda/src/any.js?");
+
+/***/ }),
+
+/***/ "./node_modules/ramda/src/anyPass.js":
+/*!*******************************************!*\
+  !*** ./node_modules/ramda/src/anyPass.js ***!
+  \*******************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nvar _curry1 = __webpack_require__(/*! ./internal/_curry1 */ \"./node_modules/ramda/src/internal/_curry1.js\");\nvar curryN = __webpack_require__(/*! ./curryN */ \"./node_modules/ramda/src/curryN.js\");\nvar max = __webpack_require__(/*! ./max */ \"./node_modules/ramda/src/max.js\");\nvar pluck = __webpack_require__(/*! ./pluck */ \"./node_modules/ramda/src/pluck.js\");\nvar reduce = __webpack_require__(/*! ./reduce */ \"./node_modules/ramda/src/reduce.js\");\n\n/**\n * Takes a list of predicates and returns a predicate that returns true for a\n * given list of arguments if at least one of the provided predicates is\n * satisfied by those arguments.\n *\n * The function returned is a curried function whose arity matches that of the\n * highest-arity predicate.\n *\n * @func\n * @memberOf R\n * @since v0.9.0\n * @category Logic\n * @sig [(*... -> Boolean)] -> (*... -> Boolean)\n * @param {Array} predicates An array of predicates to check\n * @return {Function} The combined predicate\n * @see R.allPass\n * @example\n *\n *      var isClub = R.propEq('suit', '♣');\n *      var isSpade = R.propEq('suit', '♠');\n *      var isBlackCard = R.anyPass([isClub, isSpade]);\n *\n *      isBlackCard({rank: '10', suit: '♣'}); //=> true\n *      isBlackCard({rank: 'Q', suit: '♠'}); //=> true\n *      isBlackCard({rank: 'Q', suit: '♦'}); //=> false\n */\nmodule.exports = _curry1(function anyPass(preds) {\n  return curryN(reduce(max, 0, pluck('length', preds)), function () {\n    var idx = 0;\n    var len = preds.length;\n    while (idx < len) {\n      if (preds[idx].apply(this, arguments)) {\n        return true;\n      }\n      idx += 1;\n    }\n    return false;\n  });\n});\n\n//# sourceURL=webpack:///./node_modules/ramda/src/anyPass.js?");
+
+/***/ }),
+
+/***/ "./node_modules/ramda/src/bind.js":
+/*!****************************************!*\
+  !*** ./node_modules/ramda/src/bind.js ***!
+  \****************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nvar _arity = __webpack_require__(/*! ./internal/_arity */ \"./node_modules/ramda/src/internal/_arity.js\");\nvar _curry2 = __webpack_require__(/*! ./internal/_curry2 */ \"./node_modules/ramda/src/internal/_curry2.js\");\n\n/**\n * Creates a function that is bound to a context.\n * Note: `R.bind` does not provide the additional argument-binding capabilities of\n * [Function.prototype.bind](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/bind).\n *\n * @func\n * @memberOf R\n * @since v0.6.0\n * @category Function\n * @category Object\n * @sig (* -> *) -> {*} -> (* -> *)\n * @param {Function} fn The function to bind to context\n * @param {Object} thisObj The context to bind `fn` to\n * @return {Function} A function that will execute in the context of `thisObj`.\n * @see R.partial\n * @example\n *\n *      var log = R.bind(console.log, console);\n *      R.pipe(R.assoc('a', 2), R.tap(log), R.assoc('a', 3))({a: 1}); //=> {a: 3}\n *      // logs {a: 2}\n * @symb R.bind(f, o)(a, b) = f.call(o, a, b)\n */\nmodule.exports = _curry2(function bind(fn, thisObj) {\n  return _arity(fn.length, function () {\n    return fn.apply(thisObj, arguments);\n  });\n});\n\n//# sourceURL=webpack:///./node_modules/ramda/src/bind.js?");
+
+/***/ }),
+
+/***/ "./node_modules/ramda/src/curry.js":
+/*!*****************************************!*\
+  !*** ./node_modules/ramda/src/curry.js ***!
+  \*****************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nvar _curry1 = __webpack_require__(/*! ./internal/_curry1 */ \"./node_modules/ramda/src/internal/_curry1.js\");\nvar curryN = __webpack_require__(/*! ./curryN */ \"./node_modules/ramda/src/curryN.js\");\n\n/**\n * Returns a curried equivalent of the provided function. The curried function\n * has two unusual capabilities. First, its arguments needn't be provided one\n * at a time. If `f` is a ternary function and `g` is `R.curry(f)`, the\n * following are equivalent:\n *\n *   - `g(1)(2)(3)`\n *   - `g(1)(2, 3)`\n *   - `g(1, 2)(3)`\n *   - `g(1, 2, 3)`\n *\n * Secondly, the special placeholder value [`R.__`](#__) may be used to specify\n * \"gaps\", allowing partial application of any combination of arguments,\n * regardless of their positions. If `g` is as above and `_` is [`R.__`](#__),\n * the following are equivalent:\n *\n *   - `g(1, 2, 3)`\n *   - `g(_, 2, 3)(1)`\n *   - `g(_, _, 3)(1)(2)`\n *   - `g(_, _, 3)(1, 2)`\n *   - `g(_, 2)(1)(3)`\n *   - `g(_, 2)(1, 3)`\n *   - `g(_, 2)(_, 3)(1)`\n *\n * @func\n * @memberOf R\n * @since v0.1.0\n * @category Function\n * @sig (* -> a) -> (* -> a)\n * @param {Function} fn The function to curry.\n * @return {Function} A new, curried function.\n * @see R.curryN\n * @example\n *\n *      var addFourNumbers = (a, b, c, d) => a + b + c + d;\n *\n *      var curriedAddFourNumbers = R.curry(addFourNumbers);\n *      var f = curriedAddFourNumbers(1, 2);\n *      var g = f(3);\n *      g(4); //=> 10\n */\nmodule.exports = _curry1(function curry(fn) {\n  return curryN(fn.length, fn);\n});\n\n//# sourceURL=webpack:///./node_modules/ramda/src/curry.js?");
+
+/***/ }),
+
+/***/ "./node_modules/ramda/src/curryN.js":
+/*!******************************************!*\
+  !*** ./node_modules/ramda/src/curryN.js ***!
+  \******************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nvar _arity = __webpack_require__(/*! ./internal/_arity */ \"./node_modules/ramda/src/internal/_arity.js\");\nvar _curry1 = __webpack_require__(/*! ./internal/_curry1 */ \"./node_modules/ramda/src/internal/_curry1.js\");\nvar _curry2 = __webpack_require__(/*! ./internal/_curry2 */ \"./node_modules/ramda/src/internal/_curry2.js\");\nvar _curryN = __webpack_require__(/*! ./internal/_curryN */ \"./node_modules/ramda/src/internal/_curryN.js\");\n\n/**\n * Returns a curried equivalent of the provided function, with the specified\n * arity. The curried function has two unusual capabilities. First, its\n * arguments needn't be provided one at a time. If `g` is `R.curryN(3, f)`, the\n * following are equivalent:\n *\n *   - `g(1)(2)(3)`\n *   - `g(1)(2, 3)`\n *   - `g(1, 2)(3)`\n *   - `g(1, 2, 3)`\n *\n * Secondly, the special placeholder value [`R.__`](#__) may be used to specify\n * \"gaps\", allowing partial application of any combination of arguments,\n * regardless of their positions. If `g` is as above and `_` is [`R.__`](#__),\n * the following are equivalent:\n *\n *   - `g(1, 2, 3)`\n *   - `g(_, 2, 3)(1)`\n *   - `g(_, _, 3)(1)(2)`\n *   - `g(_, _, 3)(1, 2)`\n *   - `g(_, 2)(1)(3)`\n *   - `g(_, 2)(1, 3)`\n *   - `g(_, 2)(_, 3)(1)`\n *\n * @func\n * @memberOf R\n * @since v0.5.0\n * @category Function\n * @sig Number -> (* -> a) -> (* -> a)\n * @param {Number} length The arity for the returned function.\n * @param {Function} fn The function to curry.\n * @return {Function} A new, curried function.\n * @see R.curry\n * @example\n *\n *      var sumArgs = (...args) => R.sum(args);\n *\n *      var curriedAddFourNumbers = R.curryN(4, sumArgs);\n *      var f = curriedAddFourNumbers(1, 2);\n *      var g = f(3);\n *      g(4); //=> 10\n */\nmodule.exports = _curry2(function curryN(length, fn) {\n  if (length === 1) {\n    return _curry1(fn);\n  }\n  return _arity(length, _curryN(length, [], fn));\n});\n\n//# sourceURL=webpack:///./node_modules/ramda/src/curryN.js?");
+
+/***/ }),
+
+/***/ "./node_modules/ramda/src/empty.js":
+/*!*****************************************!*\
+  !*** ./node_modules/ramda/src/empty.js ***!
+  \*****************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nvar _curry1 = __webpack_require__(/*! ./internal/_curry1 */ \"./node_modules/ramda/src/internal/_curry1.js\");\nvar _isArguments = __webpack_require__(/*! ./internal/_isArguments */ \"./node_modules/ramda/src/internal/_isArguments.js\");\nvar _isArray = __webpack_require__(/*! ./internal/_isArray */ \"./node_modules/ramda/src/internal/_isArray.js\");\nvar _isObject = __webpack_require__(/*! ./internal/_isObject */ \"./node_modules/ramda/src/internal/_isObject.js\");\nvar _isString = __webpack_require__(/*! ./internal/_isString */ \"./node_modules/ramda/src/internal/_isString.js\");\n\n/**\n * Returns the empty value of its argument's type. Ramda defines the empty\n * value of Array (`[]`), Object (`{}`), String (`''`), and Arguments. Other\n * types are supported if they define `<Type>.empty` and/or\n * `<Type>.prototype.empty`.\n *\n * Dispatches to the `empty` method of the first argument, if present.\n *\n * @func\n * @memberOf R\n * @since v0.3.0\n * @category Function\n * @sig a -> a\n * @param {*} x\n * @return {*}\n * @example\n *\n *      R.empty(Just(42));      //=> Nothing()\n *      R.empty([1, 2, 3]);     //=> []\n *      R.empty('unicorns');    //=> ''\n *      R.empty({x: 1, y: 2});  //=> {}\n */\nmodule.exports = _curry1(function empty(x) {\n  return x != null && typeof x['fantasy-land/empty'] === 'function' ? x['fantasy-land/empty']() : x != null && x.constructor != null && typeof x.constructor['fantasy-land/empty'] === 'function' ? x.constructor['fantasy-land/empty']() : x != null && typeof x.empty === 'function' ? x.empty() : x != null && x.constructor != null && typeof x.constructor.empty === 'function' ? x.constructor.empty() : _isArray(x) ? [] : _isString(x) ? '' : _isObject(x) ? {} : _isArguments(x) ? function () {\n    return arguments;\n  }() :\n  // else\n  void 0;\n});\n\n//# sourceURL=webpack:///./node_modules/ramda/src/empty.js?");
+
+/***/ }),
+
+/***/ "./node_modules/ramda/src/equals.js":
+/*!******************************************!*\
+  !*** ./node_modules/ramda/src/equals.js ***!
+  \******************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nvar _curry2 = __webpack_require__(/*! ./internal/_curry2 */ \"./node_modules/ramda/src/internal/_curry2.js\");\nvar _equals = __webpack_require__(/*! ./internal/_equals */ \"./node_modules/ramda/src/internal/_equals.js\");\n\n/**\n * Returns `true` if its arguments are equivalent, `false` otherwise. Handles\n * cyclical data structures.\n *\n * Dispatches symmetrically to the `equals` methods of both arguments, if\n * present.\n *\n * @func\n * @memberOf R\n * @since v0.15.0\n * @category Relation\n * @sig a -> b -> Boolean\n * @param {*} a\n * @param {*} b\n * @return {Boolean}\n * @example\n *\n *      R.equals(1, 1); //=> true\n *      R.equals(1, '1'); //=> false\n *      R.equals([1, 2, 3], [1, 2, 3]); //=> true\n *\n *      var a = {}; a.v = a;\n *      var b = {}; b.v = b;\n *      R.equals(a, b); //=> true\n */\nmodule.exports = _curry2(function equals(a, b) {\n  return _equals(a, b, [], []);\n});\n\n//# sourceURL=webpack:///./node_modules/ramda/src/equals.js?");
+
+/***/ }),
+
+/***/ "./node_modules/ramda/src/filter.js":
+/*!******************************************!*\
+  !*** ./node_modules/ramda/src/filter.js ***!
+  \******************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nvar _curry2 = __webpack_require__(/*! ./internal/_curry2 */ \"./node_modules/ramda/src/internal/_curry2.js\");\nvar _dispatchable = __webpack_require__(/*! ./internal/_dispatchable */ \"./node_modules/ramda/src/internal/_dispatchable.js\");\nvar _filter = __webpack_require__(/*! ./internal/_filter */ \"./node_modules/ramda/src/internal/_filter.js\");\nvar _isObject = __webpack_require__(/*! ./internal/_isObject */ \"./node_modules/ramda/src/internal/_isObject.js\");\nvar _reduce = __webpack_require__(/*! ./internal/_reduce */ \"./node_modules/ramda/src/internal/_reduce.js\");\nvar _xfilter = __webpack_require__(/*! ./internal/_xfilter */ \"./node_modules/ramda/src/internal/_xfilter.js\");\nvar keys = __webpack_require__(/*! ./keys */ \"./node_modules/ramda/src/keys.js\");\n\n/**\n * Takes a predicate and a `Filterable`, and returns a new filterable of the\n * same type containing the members of the given filterable which satisfy the\n * given predicate. Filterable objects include plain objects or any object\n * that has a filter method such as `Array`.\n *\n * Dispatches to the `filter` method of the second argument, if present.\n *\n * Acts as a transducer if a transformer is given in list position.\n *\n * @func\n * @memberOf R\n * @since v0.1.0\n * @category List\n * @sig Filterable f => (a -> Boolean) -> f a -> f a\n * @param {Function} pred\n * @param {Array} filterable\n * @return {Array} Filterable\n * @see R.reject, R.transduce, R.addIndex\n * @example\n *\n *      var isEven = n => n % 2 === 0;\n *\n *      R.filter(isEven, [1, 2, 3, 4]); //=> [2, 4]\n *\n *      R.filter(isEven, {a: 1, b: 2, c: 3, d: 4}); //=> {b: 2, d: 4}\n */\nmodule.exports = _curry2(_dispatchable(['filter'], _xfilter, function (pred, filterable) {\n  return _isObject(filterable) ? _reduce(function (acc, key) {\n    if (pred(filterable[key])) {\n      acc[key] = filterable[key];\n    }\n    return acc;\n  }, {}, keys(filterable)) :\n  // else\n  _filter(pred, filterable);\n}));\n\n//# sourceURL=webpack:///./node_modules/ramda/src/filter.js?");
+
+/***/ }),
+
+/***/ "./node_modules/ramda/src/fromPairs.js":
+/*!*********************************************!*\
+  !*** ./node_modules/ramda/src/fromPairs.js ***!
+  \*********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nvar _curry1 = __webpack_require__(/*! ./internal/_curry1 */ \"./node_modules/ramda/src/internal/_curry1.js\");\n\n/**\n * Creates a new object from a list key-value pairs. If a key appears in\n * multiple pairs, the rightmost pair is included in the object.\n *\n * @func\n * @memberOf R\n * @since v0.3.0\n * @category List\n * @sig [[k,v]] -> {k: v}\n * @param {Array} pairs An array of two-element arrays that will be the keys and values of the output object.\n * @return {Object} The object made by pairing up `keys` and `values`.\n * @see R.toPairs, R.pair\n * @example\n *\n *      R.fromPairs([['a', 1], ['b', 2], ['c', 3]]); //=> {a: 1, b: 2, c: 3}\n */\nmodule.exports = _curry1(function fromPairs(pairs) {\n  var result = {};\n  var idx = 0;\n  while (idx < pairs.length) {\n    result[pairs[idx][0]] = pairs[idx][1];\n    idx += 1;\n  }\n  return result;\n});\n\n//# sourceURL=webpack:///./node_modules/ramda/src/fromPairs.js?");
+
+/***/ }),
+
+/***/ "./node_modules/ramda/src/has.js":
+/*!***************************************!*\
+  !*** ./node_modules/ramda/src/has.js ***!
+  \***************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nvar _curry2 = __webpack_require__(/*! ./internal/_curry2 */ \"./node_modules/ramda/src/internal/_curry2.js\");\nvar _has = __webpack_require__(/*! ./internal/_has */ \"./node_modules/ramda/src/internal/_has.js\");\n\n/**\n * Returns whether or not an object has an own property with the specified name\n *\n * @func\n * @memberOf R\n * @since v0.7.0\n * @category Object\n * @sig s -> {s: x} -> Boolean\n * @param {String} prop The name of the property to check for.\n * @param {Object} obj The object to query.\n * @return {Boolean} Whether the property exists.\n * @example\n *\n *      var hasName = R.has('name');\n *      hasName({name: 'alice'});   //=> true\n *      hasName({name: 'bob'});     //=> true\n *      hasName({});                //=> false\n *\n *      var point = {x: 0, y: 0};\n *      var pointHas = R.has(R.__, point);\n *      pointHas('x');  //=> true\n *      pointHas('y');  //=> true\n *      pointHas('z');  //=> false\n */\nmodule.exports = _curry2(_has);\n\n//# sourceURL=webpack:///./node_modules/ramda/src/has.js?");
+
+/***/ }),
+
+/***/ "./node_modules/ramda/src/identical.js":
+/*!*********************************************!*\
+  !*** ./node_modules/ramda/src/identical.js ***!
+  \*********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nvar _curry2 = __webpack_require__(/*! ./internal/_curry2 */ \"./node_modules/ramda/src/internal/_curry2.js\");\n\n/**\n * Returns true if its arguments are identical, false otherwise. Values are\n * identical if they reference the same memory. `NaN` is identical to `NaN`;\n * `0` and `-0` are not identical.\n *\n * @func\n * @memberOf R\n * @since v0.15.0\n * @category Relation\n * @sig a -> a -> Boolean\n * @param {*} a\n * @param {*} b\n * @return {Boolean}\n * @example\n *\n *      var o = {};\n *      R.identical(o, o); //=> true\n *      R.identical(1, 1); //=> true\n *      R.identical(1, '1'); //=> false\n *      R.identical([], []); //=> false\n *      R.identical(0, -0); //=> false\n *      R.identical(NaN, NaN); //=> true\n */\nmodule.exports = _curry2(function identical(a, b) {\n  // SameValue algorithm\n  if (a === b) {\n    // Steps 1-5, 7-10\n    // Steps 6.b-6.e: +0 != -0\n    return a !== 0 || 1 / a === 1 / b;\n  } else {\n    // Step 6.a: NaN == NaN\n    return a !== a && b !== b;\n  }\n});\n\n//# sourceURL=webpack:///./node_modules/ramda/src/identical.js?");
+
+/***/ }),
+
+/***/ "./node_modules/ramda/src/internal/_arity.js":
+/*!***************************************************!*\
+  !*** ./node_modules/ramda/src/internal/_arity.js ***!
+  \***************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nmodule.exports = function _arity(n, fn) {\n  /* eslint-disable no-unused-vars */\n  switch (n) {\n    case 0:\n      return function () {\n        return fn.apply(this, arguments);\n      };\n    case 1:\n      return function (a0) {\n        return fn.apply(this, arguments);\n      };\n    case 2:\n      return function (a0, a1) {\n        return fn.apply(this, arguments);\n      };\n    case 3:\n      return function (a0, a1, a2) {\n        return fn.apply(this, arguments);\n      };\n    case 4:\n      return function (a0, a1, a2, a3) {\n        return fn.apply(this, arguments);\n      };\n    case 5:\n      return function (a0, a1, a2, a3, a4) {\n        return fn.apply(this, arguments);\n      };\n    case 6:\n      return function (a0, a1, a2, a3, a4, a5) {\n        return fn.apply(this, arguments);\n      };\n    case 7:\n      return function (a0, a1, a2, a3, a4, a5, a6) {\n        return fn.apply(this, arguments);\n      };\n    case 8:\n      return function (a0, a1, a2, a3, a4, a5, a6, a7) {\n        return fn.apply(this, arguments);\n      };\n    case 9:\n      return function (a0, a1, a2, a3, a4, a5, a6, a7, a8) {\n        return fn.apply(this, arguments);\n      };\n    case 10:\n      return function (a0, a1, a2, a3, a4, a5, a6, a7, a8, a9) {\n        return fn.apply(this, arguments);\n      };\n    default:\n      throw new Error('First argument to _arity must be a non-negative integer no greater than ten');\n  }\n};\n\n//# sourceURL=webpack:///./node_modules/ramda/src/internal/_arity.js?");
+
+/***/ }),
+
+/***/ "./node_modules/ramda/src/internal/_arrayFromIterator.js":
+/*!***************************************************************!*\
+  !*** ./node_modules/ramda/src/internal/_arrayFromIterator.js ***!
+  \***************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nmodule.exports = function _arrayFromIterator(iter) {\n  var list = [];\n  var next;\n  while (!(next = iter.next()).done) {\n    list.push(next.value);\n  }\n  return list;\n};\n\n//# sourceURL=webpack:///./node_modules/ramda/src/internal/_arrayFromIterator.js?");
+
+/***/ }),
+
+/***/ "./node_modules/ramda/src/internal/_assign.js":
+/*!****************************************************!*\
+  !*** ./node_modules/ramda/src/internal/_assign.js ***!
+  \****************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nvar _objectAssign = __webpack_require__(/*! ./_objectAssign */ \"./node_modules/ramda/src/internal/_objectAssign.js\");\n\nmodule.exports = typeof Object.assign === 'function' ? Object.assign : _objectAssign;\n\n//# sourceURL=webpack:///./node_modules/ramda/src/internal/_assign.js?");
+
+/***/ }),
+
+/***/ "./node_modules/ramda/src/internal/_checkForMethod.js":
+/*!************************************************************!*\
+  !*** ./node_modules/ramda/src/internal/_checkForMethod.js ***!
+  \************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nvar _isArray = __webpack_require__(/*! ./_isArray */ \"./node_modules/ramda/src/internal/_isArray.js\");\n\n/**\n * This checks whether a function has a [methodname] function. If it isn't an\n * array it will execute that function otherwise it will default to the ramda\n * implementation.\n *\n * @private\n * @param {Function} fn ramda implemtation\n * @param {String} methodname property to check for a custom implementation\n * @return {Object} Whatever the return value of the method is.\n */\nmodule.exports = function _checkForMethod(methodname, fn) {\n  return function () {\n    var length = arguments.length;\n    if (length === 0) {\n      return fn();\n    }\n    var obj = arguments[length - 1];\n    return _isArray(obj) || typeof obj[methodname] !== 'function' ? fn.apply(this, arguments) : obj[methodname].apply(obj, Array.prototype.slice.call(arguments, 0, length - 1));\n  };\n};\n\n//# sourceURL=webpack:///./node_modules/ramda/src/internal/_checkForMethod.js?");
+
+/***/ }),
+
+/***/ "./node_modules/ramda/src/internal/_complement.js":
+/*!********************************************************!*\
+  !*** ./node_modules/ramda/src/internal/_complement.js ***!
+  \********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nmodule.exports = function _complement(f) {\n  return function () {\n    return !f.apply(this, arguments);\n  };\n};\n\n//# sourceURL=webpack:///./node_modules/ramda/src/internal/_complement.js?");
+
+/***/ }),
+
+/***/ "./node_modules/ramda/src/internal/_contains.js":
+/*!******************************************************!*\
+  !*** ./node_modules/ramda/src/internal/_contains.js ***!
+  \******************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nvar _indexOf = __webpack_require__(/*! ./_indexOf */ \"./node_modules/ramda/src/internal/_indexOf.js\");\n\nmodule.exports = function _contains(a, list) {\n  return _indexOf(list, a, 0) >= 0;\n};\n\n//# sourceURL=webpack:///./node_modules/ramda/src/internal/_contains.js?");
+
+/***/ }),
+
+/***/ "./node_modules/ramda/src/internal/_curry1.js":
+/*!****************************************************!*\
+  !*** ./node_modules/ramda/src/internal/_curry1.js ***!
+  \****************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nvar _isPlaceholder = __webpack_require__(/*! ./_isPlaceholder */ \"./node_modules/ramda/src/internal/_isPlaceholder.js\");\n\n/**\n * Optimized internal one-arity curry function.\n *\n * @private\n * @category Function\n * @param {Function} fn The function to curry.\n * @return {Function} The curried function.\n */\nmodule.exports = function _curry1(fn) {\n  return function f1(a) {\n    if (arguments.length === 0 || _isPlaceholder(a)) {\n      return f1;\n    } else {\n      return fn.apply(this, arguments);\n    }\n  };\n};\n\n//# sourceURL=webpack:///./node_modules/ramda/src/internal/_curry1.js?");
+
+/***/ }),
+
+/***/ "./node_modules/ramda/src/internal/_curry2.js":
+/*!****************************************************!*\
+  !*** ./node_modules/ramda/src/internal/_curry2.js ***!
+  \****************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nvar _curry1 = __webpack_require__(/*! ./_curry1 */ \"./node_modules/ramda/src/internal/_curry1.js\");\nvar _isPlaceholder = __webpack_require__(/*! ./_isPlaceholder */ \"./node_modules/ramda/src/internal/_isPlaceholder.js\");\n\n/**\n * Optimized internal two-arity curry function.\n *\n * @private\n * @category Function\n * @param {Function} fn The function to curry.\n * @return {Function} The curried function.\n */\nmodule.exports = function _curry2(fn) {\n  return function f2(a, b) {\n    switch (arguments.length) {\n      case 0:\n        return f2;\n      case 1:\n        return _isPlaceholder(a) ? f2 : _curry1(function (_b) {\n          return fn(a, _b);\n        });\n      default:\n        return _isPlaceholder(a) && _isPlaceholder(b) ? f2 : _isPlaceholder(a) ? _curry1(function (_a) {\n          return fn(_a, b);\n        }) : _isPlaceholder(b) ? _curry1(function (_b) {\n          return fn(a, _b);\n        }) : fn(a, b);\n    }\n  };\n};\n\n//# sourceURL=webpack:///./node_modules/ramda/src/internal/_curry2.js?");
+
+/***/ }),
+
+/***/ "./node_modules/ramda/src/internal/_curry3.js":
+/*!****************************************************!*\
+  !*** ./node_modules/ramda/src/internal/_curry3.js ***!
+  \****************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nvar _curry1 = __webpack_require__(/*! ./_curry1 */ \"./node_modules/ramda/src/internal/_curry1.js\");\nvar _curry2 = __webpack_require__(/*! ./_curry2 */ \"./node_modules/ramda/src/internal/_curry2.js\");\nvar _isPlaceholder = __webpack_require__(/*! ./_isPlaceholder */ \"./node_modules/ramda/src/internal/_isPlaceholder.js\");\n\n/**\n * Optimized internal three-arity curry function.\n *\n * @private\n * @category Function\n * @param {Function} fn The function to curry.\n * @return {Function} The curried function.\n */\nmodule.exports = function _curry3(fn) {\n  return function f3(a, b, c) {\n    switch (arguments.length) {\n      case 0:\n        return f3;\n      case 1:\n        return _isPlaceholder(a) ? f3 : _curry2(function (_b, _c) {\n          return fn(a, _b, _c);\n        });\n      case 2:\n        return _isPlaceholder(a) && _isPlaceholder(b) ? f3 : _isPlaceholder(a) ? _curry2(function (_a, _c) {\n          return fn(_a, b, _c);\n        }) : _isPlaceholder(b) ? _curry2(function (_b, _c) {\n          return fn(a, _b, _c);\n        }) : _curry1(function (_c) {\n          return fn(a, b, _c);\n        });\n      default:\n        return _isPlaceholder(a) && _isPlaceholder(b) && _isPlaceholder(c) ? f3 : _isPlaceholder(a) && _isPlaceholder(b) ? _curry2(function (_a, _b) {\n          return fn(_a, _b, c);\n        }) : _isPlaceholder(a) && _isPlaceholder(c) ? _curry2(function (_a, _c) {\n          return fn(_a, b, _c);\n        }) : _isPlaceholder(b) && _isPlaceholder(c) ? _curry2(function (_b, _c) {\n          return fn(a, _b, _c);\n        }) : _isPlaceholder(a) ? _curry1(function (_a) {\n          return fn(_a, b, c);\n        }) : _isPlaceholder(b) ? _curry1(function (_b) {\n          return fn(a, _b, c);\n        }) : _isPlaceholder(c) ? _curry1(function (_c) {\n          return fn(a, b, _c);\n        }) : fn(a, b, c);\n    }\n  };\n};\n\n//# sourceURL=webpack:///./node_modules/ramda/src/internal/_curry3.js?");
+
+/***/ }),
+
+/***/ "./node_modules/ramda/src/internal/_curryN.js":
+/*!****************************************************!*\
+  !*** ./node_modules/ramda/src/internal/_curryN.js ***!
+  \****************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nvar _arity = __webpack_require__(/*! ./_arity */ \"./node_modules/ramda/src/internal/_arity.js\");\nvar _isPlaceholder = __webpack_require__(/*! ./_isPlaceholder */ \"./node_modules/ramda/src/internal/_isPlaceholder.js\");\n\n/**\n * Internal curryN function.\n *\n * @private\n * @category Function\n * @param {Number} length The arity of the curried function.\n * @param {Array} received An array of arguments received thus far.\n * @param {Function} fn The function to curry.\n * @return {Function} The curried function.\n */\nmodule.exports = function _curryN(length, received, fn) {\n  return function () {\n    var combined = [];\n    var argsIdx = 0;\n    var left = length;\n    var combinedIdx = 0;\n    while (combinedIdx < received.length || argsIdx < arguments.length) {\n      var result;\n      if (combinedIdx < received.length && (!_isPlaceholder(received[combinedIdx]) || argsIdx >= arguments.length)) {\n        result = received[combinedIdx];\n      } else {\n        result = arguments[argsIdx];\n        argsIdx += 1;\n      }\n      combined[combinedIdx] = result;\n      if (!_isPlaceholder(result)) {\n        left -= 1;\n      }\n      combinedIdx += 1;\n    }\n    return left <= 0 ? fn.apply(this, combined) : _arity(left, _curryN(length, combined, fn));\n  };\n};\n\n//# sourceURL=webpack:///./node_modules/ramda/src/internal/_curryN.js?");
+
+/***/ }),
+
+/***/ "./node_modules/ramda/src/internal/_dispatchable.js":
+/*!**********************************************************!*\
+  !*** ./node_modules/ramda/src/internal/_dispatchable.js ***!
+  \**********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nvar _isArray = __webpack_require__(/*! ./_isArray */ \"./node_modules/ramda/src/internal/_isArray.js\");\nvar _isTransformer = __webpack_require__(/*! ./_isTransformer */ \"./node_modules/ramda/src/internal/_isTransformer.js\");\n\n/**\n * Returns a function that dispatches with different strategies based on the\n * object in list position (last argument). If it is an array, executes [fn].\n * Otherwise, if it has a function with one of the given method names, it will\n * execute that function (functor case). Otherwise, if it is a transformer,\n * uses transducer [xf] to return a new transformer (transducer case).\n * Otherwise, it will default to executing [fn].\n *\n * @private\n * @param {Array} methodNames properties to check for a custom implementation\n * @param {Function} xf transducer to initialize if object is transformer\n * @param {Function} fn default ramda implementation\n * @return {Function} A function that dispatches on object in list position\n */\nmodule.exports = function _dispatchable(methodNames, xf, fn) {\n  return function () {\n    if (arguments.length === 0) {\n      return fn();\n    }\n    var args = Array.prototype.slice.call(arguments, 0);\n    var obj = args.pop();\n    if (!_isArray(obj)) {\n      var idx = 0;\n      while (idx < methodNames.length) {\n        if (typeof obj[methodNames[idx]] === 'function') {\n          return obj[methodNames[idx]].apply(obj, args);\n        }\n        idx += 1;\n      }\n      if (_isTransformer(obj)) {\n        var transducer = xf.apply(null, args);\n        return transducer(obj);\n      }\n    }\n    return fn.apply(this, arguments);\n  };\n};\n\n//# sourceURL=webpack:///./node_modules/ramda/src/internal/_dispatchable.js?");
+
+/***/ }),
+
+/***/ "./node_modules/ramda/src/internal/_equals.js":
+/*!****************************************************!*\
+  !*** ./node_modules/ramda/src/internal/_equals.js ***!
+  \****************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nvar _typeof = typeof Symbol === \"function\" && typeof Symbol.iterator === \"symbol\" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === \"function\" && obj.constructor === Symbol && obj !== Symbol.prototype ? \"symbol\" : typeof obj; };\n\nvar _arrayFromIterator = __webpack_require__(/*! ./_arrayFromIterator */ \"./node_modules/ramda/src/internal/_arrayFromIterator.js\");\nvar _functionName = __webpack_require__(/*! ./_functionName */ \"./node_modules/ramda/src/internal/_functionName.js\");\nvar _has = __webpack_require__(/*! ./_has */ \"./node_modules/ramda/src/internal/_has.js\");\nvar identical = __webpack_require__(/*! ../identical */ \"./node_modules/ramda/src/identical.js\");\nvar keys = __webpack_require__(/*! ../keys */ \"./node_modules/ramda/src/keys.js\");\nvar type = __webpack_require__(/*! ../type */ \"./node_modules/ramda/src/type.js\");\n\nmodule.exports = function _equals(a, b, stackA, stackB) {\n  if (identical(a, b)) {\n    return true;\n  }\n\n  if (type(a) !== type(b)) {\n    return false;\n  }\n\n  if (a == null || b == null) {\n    return false;\n  }\n\n  if (typeof a['fantasy-land/equals'] === 'function' || typeof b['fantasy-land/equals'] === 'function') {\n    return typeof a['fantasy-land/equals'] === 'function' && a['fantasy-land/equals'](b) && typeof b['fantasy-land/equals'] === 'function' && b['fantasy-land/equals'](a);\n  }\n\n  if (typeof a.equals === 'function' || typeof b.equals === 'function') {\n    return typeof a.equals === 'function' && a.equals(b) && typeof b.equals === 'function' && b.equals(a);\n  }\n\n  switch (type(a)) {\n    case 'Arguments':\n    case 'Array':\n    case 'Object':\n      if (typeof a.constructor === 'function' && _functionName(a.constructor) === 'Promise') {\n        return a === b;\n      }\n      break;\n    case 'Boolean':\n    case 'Number':\n    case 'String':\n      if (!((typeof a === 'undefined' ? 'undefined' : _typeof(a)) === (typeof b === 'undefined' ? 'undefined' : _typeof(b)) && identical(a.valueOf(), b.valueOf()))) {\n        return false;\n      }\n      break;\n    case 'Date':\n      if (!identical(a.valueOf(), b.valueOf())) {\n        return false;\n      }\n      break;\n    case 'Error':\n      return a.name === b.name && a.message === b.message;\n    case 'RegExp':\n      if (!(a.source === b.source && a.global === b.global && a.ignoreCase === b.ignoreCase && a.multiline === b.multiline && a.sticky === b.sticky && a.unicode === b.unicode)) {\n        return false;\n      }\n      break;\n    case 'Map':\n    case 'Set':\n      if (!_equals(_arrayFromIterator(a.entries()), _arrayFromIterator(b.entries()), stackA, stackB)) {\n        return false;\n      }\n      break;\n    case 'Int8Array':\n    case 'Uint8Array':\n    case 'Uint8ClampedArray':\n    case 'Int16Array':\n    case 'Uint16Array':\n    case 'Int32Array':\n    case 'Uint32Array':\n    case 'Float32Array':\n    case 'Float64Array':\n      break;\n    case 'ArrayBuffer':\n      break;\n    default:\n      // Values of other types are only equal if identical.\n      return false;\n  }\n\n  var keysA = keys(a);\n  if (keysA.length !== keys(b).length) {\n    return false;\n  }\n\n  var idx = stackA.length - 1;\n  while (idx >= 0) {\n    if (stackA[idx] === a) {\n      return stackB[idx] === b;\n    }\n    idx -= 1;\n  }\n\n  stackA.push(a);\n  stackB.push(b);\n  idx = keysA.length - 1;\n  while (idx >= 0) {\n    var key = keysA[idx];\n    if (!(_has(key, b) && _equals(b[key], a[key], stackA, stackB))) {\n      return false;\n    }\n    idx -= 1;\n  }\n  stackA.pop();\n  stackB.pop();\n  return true;\n};\n\n//# sourceURL=webpack:///./node_modules/ramda/src/internal/_equals.js?");
+
+/***/ }),
+
+/***/ "./node_modules/ramda/src/internal/_filter.js":
+/*!****************************************************!*\
+  !*** ./node_modules/ramda/src/internal/_filter.js ***!
+  \****************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nmodule.exports = function _filter(fn, list) {\n  var idx = 0;\n  var len = list.length;\n  var result = [];\n\n  while (idx < len) {\n    if (fn(list[idx])) {\n      result[result.length] = list[idx];\n    }\n    idx += 1;\n  }\n  return result;\n};\n\n//# sourceURL=webpack:///./node_modules/ramda/src/internal/_filter.js?");
+
+/***/ }),
+
+/***/ "./node_modules/ramda/src/internal/_functionName.js":
+/*!**********************************************************!*\
+  !*** ./node_modules/ramda/src/internal/_functionName.js ***!
+  \**********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nmodule.exports = function _functionName(f) {\n  // String(x => x) evaluates to \"x => x\", so the pattern may not match.\n  var match = String(f).match(/^function (\\w*)/);\n  return match == null ? '' : match[1];\n};\n\n//# sourceURL=webpack:///./node_modules/ramda/src/internal/_functionName.js?");
+
+/***/ }),
+
+/***/ "./node_modules/ramda/src/internal/_has.js":
+/*!*************************************************!*\
+  !*** ./node_modules/ramda/src/internal/_has.js ***!
+  \*************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nmodule.exports = function _has(prop, obj) {\n  return Object.prototype.hasOwnProperty.call(obj, prop);\n};\n\n//# sourceURL=webpack:///./node_modules/ramda/src/internal/_has.js?");
+
+/***/ }),
+
+/***/ "./node_modules/ramda/src/internal/_indexOf.js":
+/*!*****************************************************!*\
+  !*** ./node_modules/ramda/src/internal/_indexOf.js ***!
+  \*****************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nvar _typeof = typeof Symbol === \"function\" && typeof Symbol.iterator === \"symbol\" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === \"function\" && obj.constructor === Symbol && obj !== Symbol.prototype ? \"symbol\" : typeof obj; };\n\nvar equals = __webpack_require__(/*! ../equals */ \"./node_modules/ramda/src/equals.js\");\n\nmodule.exports = function _indexOf(list, a, idx) {\n  var inf, item;\n  // Array.prototype.indexOf doesn't exist below IE9\n  if (typeof list.indexOf === 'function') {\n    switch (typeof a === 'undefined' ? 'undefined' : _typeof(a)) {\n      case 'number':\n        if (a === 0) {\n          // manually crawl the list to distinguish between +0 and -0\n          inf = 1 / a;\n          while (idx < list.length) {\n            item = list[idx];\n            if (item === 0 && 1 / item === inf) {\n              return idx;\n            }\n            idx += 1;\n          }\n          return -1;\n        } else if (a !== a) {\n          // NaN\n          while (idx < list.length) {\n            item = list[idx];\n            if (typeof item === 'number' && item !== item) {\n              return idx;\n            }\n            idx += 1;\n          }\n          return -1;\n        }\n        // non-zero numbers can utilise Set\n        return list.indexOf(a, idx);\n\n      // all these types can utilise Set\n      case 'string':\n      case 'boolean':\n      case 'function':\n      case 'undefined':\n        return list.indexOf(a, idx);\n\n      case 'object':\n        if (a === null) {\n          // null can utilise Set\n          return list.indexOf(a, idx);\n        }\n    }\n  }\n  // anything else not covered above, defer to R.equals\n  while (idx < list.length) {\n    if (equals(list[idx], a)) {\n      return idx;\n    }\n    idx += 1;\n  }\n  return -1;\n};\n\n//# sourceURL=webpack:///./node_modules/ramda/src/internal/_indexOf.js?");
+
+/***/ }),
+
+/***/ "./node_modules/ramda/src/internal/_isArguments.js":
+/*!*********************************************************!*\
+  !*** ./node_modules/ramda/src/internal/_isArguments.js ***!
+  \*********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nvar _has = __webpack_require__(/*! ./_has */ \"./node_modules/ramda/src/internal/_has.js\");\n\nmodule.exports = function () {\n  var toString = Object.prototype.toString;\n  return toString.call(arguments) === '[object Arguments]' ? function _isArguments(x) {\n    return toString.call(x) === '[object Arguments]';\n  } : function _isArguments(x) {\n    return _has('callee', x);\n  };\n}();\n\n//# sourceURL=webpack:///./node_modules/ramda/src/internal/_isArguments.js?");
+
+/***/ }),
+
+/***/ "./node_modules/ramda/src/internal/_isArray.js":
+/*!*****************************************************!*\
+  !*** ./node_modules/ramda/src/internal/_isArray.js ***!
+  \*****************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\n/**\n * Tests whether or not an object is an array.\n *\n * @private\n * @param {*} val The object to test.\n * @return {Boolean} `true` if `val` is an array, `false` otherwise.\n * @example\n *\n *      _isArray([]); //=> true\n *      _isArray(null); //=> false\n *      _isArray({}); //=> false\n */\nmodule.exports = Array.isArray || function _isArray(val) {\n  return val != null && val.length >= 0 && Object.prototype.toString.call(val) === '[object Array]';\n};\n\n//# sourceURL=webpack:///./node_modules/ramda/src/internal/_isArray.js?");
+
+/***/ }),
+
+/***/ "./node_modules/ramda/src/internal/_isArrayLike.js":
+/*!*********************************************************!*\
+  !*** ./node_modules/ramda/src/internal/_isArrayLike.js ***!
+  \*********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nvar _typeof = typeof Symbol === \"function\" && typeof Symbol.iterator === \"symbol\" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === \"function\" && obj.constructor === Symbol && obj !== Symbol.prototype ? \"symbol\" : typeof obj; };\n\nvar _curry1 = __webpack_require__(/*! ./_curry1 */ \"./node_modules/ramda/src/internal/_curry1.js\");\nvar _isArray = __webpack_require__(/*! ./_isArray */ \"./node_modules/ramda/src/internal/_isArray.js\");\nvar _isString = __webpack_require__(/*! ./_isString */ \"./node_modules/ramda/src/internal/_isString.js\");\n\n/**\n * Tests whether or not an object is similar to an array.\n *\n * @private\n * @category Type\n * @category List\n * @sig * -> Boolean\n * @param {*} x The object to test.\n * @return {Boolean} `true` if `x` has a numeric length property and extreme indices defined; `false` otherwise.\n * @example\n *\n *      _isArrayLike([]); //=> true\n *      _isArrayLike(true); //=> false\n *      _isArrayLike({}); //=> false\n *      _isArrayLike({length: 10}); //=> false\n *      _isArrayLike({0: 'zero', 9: 'nine', length: 10}); //=> true\n */\nmodule.exports = _curry1(function isArrayLike(x) {\n  if (_isArray(x)) {\n    return true;\n  }\n  if (!x) {\n    return false;\n  }\n  if ((typeof x === 'undefined' ? 'undefined' : _typeof(x)) !== 'object') {\n    return false;\n  }\n  if (_isString(x)) {\n    return false;\n  }\n  if (x.nodeType === 1) {\n    return !!x.length;\n  }\n  if (x.length === 0) {\n    return true;\n  }\n  if (x.length > 0) {\n    return x.hasOwnProperty(0) && x.hasOwnProperty(x.length - 1);\n  }\n  return false;\n});\n\n//# sourceURL=webpack:///./node_modules/ramda/src/internal/_isArrayLike.js?");
+
+/***/ }),
+
+/***/ "./node_modules/ramda/src/internal/_isFunction.js":
+/*!********************************************************!*\
+  !*** ./node_modules/ramda/src/internal/_isFunction.js ***!
+  \********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nmodule.exports = function _isFunction(x) {\n  return Object.prototype.toString.call(x) === '[object Function]';\n};\n\n//# sourceURL=webpack:///./node_modules/ramda/src/internal/_isFunction.js?");
+
+/***/ }),
+
+/***/ "./node_modules/ramda/src/internal/_isObject.js":
+/*!******************************************************!*\
+  !*** ./node_modules/ramda/src/internal/_isObject.js ***!
+  \******************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nmodule.exports = function _isObject(x) {\n  return Object.prototype.toString.call(x) === '[object Object]';\n};\n\n//# sourceURL=webpack:///./node_modules/ramda/src/internal/_isObject.js?");
+
+/***/ }),
+
+/***/ "./node_modules/ramda/src/internal/_isPlaceholder.js":
+/*!***********************************************************!*\
+  !*** ./node_modules/ramda/src/internal/_isPlaceholder.js ***!
+  \***********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nvar _typeof = typeof Symbol === \"function\" && typeof Symbol.iterator === \"symbol\" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === \"function\" && obj.constructor === Symbol && obj !== Symbol.prototype ? \"symbol\" : typeof obj; };\n\nmodule.exports = function _isPlaceholder(a) {\n       return a != null && (typeof a === 'undefined' ? 'undefined' : _typeof(a)) === 'object' && a['@@functional/placeholder'] === true;\n};\n\n//# sourceURL=webpack:///./node_modules/ramda/src/internal/_isPlaceholder.js?");
+
+/***/ }),
+
+/***/ "./node_modules/ramda/src/internal/_isString.js":
+/*!******************************************************!*\
+  !*** ./node_modules/ramda/src/internal/_isString.js ***!
+  \******************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nmodule.exports = function _isString(x) {\n  return Object.prototype.toString.call(x) === '[object String]';\n};\n\n//# sourceURL=webpack:///./node_modules/ramda/src/internal/_isString.js?");
+
+/***/ }),
+
+/***/ "./node_modules/ramda/src/internal/_isTransformer.js":
+/*!***********************************************************!*\
+  !*** ./node_modules/ramda/src/internal/_isTransformer.js ***!
+  \***********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nmodule.exports = function _isTransformer(obj) {\n  return typeof obj['@@transducer/step'] === 'function';\n};\n\n//# sourceURL=webpack:///./node_modules/ramda/src/internal/_isTransformer.js?");
+
+/***/ }),
+
+/***/ "./node_modules/ramda/src/internal/_map.js":
+/*!*************************************************!*\
+  !*** ./node_modules/ramda/src/internal/_map.js ***!
+  \*************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nmodule.exports = function _map(fn, functor) {\n  var idx = 0;\n  var len = functor.length;\n  var result = Array(len);\n  while (idx < len) {\n    result[idx] = fn(functor[idx]);\n    idx += 1;\n  }\n  return result;\n};\n\n//# sourceURL=webpack:///./node_modules/ramda/src/internal/_map.js?");
+
+/***/ }),
+
+/***/ "./node_modules/ramda/src/internal/_objectAssign.js":
+/*!**********************************************************!*\
+  !*** ./node_modules/ramda/src/internal/_objectAssign.js ***!
+  \**********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nvar _has = __webpack_require__(/*! ./_has */ \"./node_modules/ramda/src/internal/_has.js\");\n\n// Based on https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Object/assign\nmodule.exports = function _objectAssign(target) {\n  if (target == null) {\n    throw new TypeError('Cannot convert undefined or null to object');\n  }\n\n  var output = Object(target);\n  var idx = 1;\n  var length = arguments.length;\n  while (idx < length) {\n    var source = arguments[idx];\n    if (source != null) {\n      for (var nextKey in source) {\n        if (_has(nextKey, source)) {\n          output[nextKey] = source[nextKey];\n        }\n      }\n    }\n    idx += 1;\n  }\n  return output;\n};\n\n//# sourceURL=webpack:///./node_modules/ramda/src/internal/_objectAssign.js?");
+
+/***/ }),
+
+/***/ "./node_modules/ramda/src/internal/_pipe.js":
+/*!**************************************************!*\
+  !*** ./node_modules/ramda/src/internal/_pipe.js ***!
+  \**************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nmodule.exports = function _pipe(f, g) {\n  return function () {\n    return g.call(this, f.apply(this, arguments));\n  };\n};\n\n//# sourceURL=webpack:///./node_modules/ramda/src/internal/_pipe.js?");
+
+/***/ }),
+
+/***/ "./node_modules/ramda/src/internal/_quote.js":
+/*!***************************************************!*\
+  !*** ./node_modules/ramda/src/internal/_quote.js ***!
+  \***************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nmodule.exports = function _quote(s) {\n  var escaped = s.replace(/\\\\/g, '\\\\\\\\').replace(/[\\b]/g, '\\\\b') // \\b matches word boundary; [\\b] matches backspace\n  .replace(/\\f/g, '\\\\f').replace(/\\n/g, '\\\\n').replace(/\\r/g, '\\\\r').replace(/\\t/g, '\\\\t').replace(/\\v/g, '\\\\v').replace(/\\0/g, '\\\\0');\n\n  return '\"' + escaped.replace(/\"/g, '\\\\\"') + '\"';\n};\n\n//# sourceURL=webpack:///./node_modules/ramda/src/internal/_quote.js?");
+
+/***/ }),
+
+/***/ "./node_modules/ramda/src/internal/_reduce.js":
+/*!****************************************************!*\
+  !*** ./node_modules/ramda/src/internal/_reduce.js ***!
+  \****************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nvar _isArrayLike = __webpack_require__(/*! ./_isArrayLike */ \"./node_modules/ramda/src/internal/_isArrayLike.js\");\nvar _xwrap = __webpack_require__(/*! ./_xwrap */ \"./node_modules/ramda/src/internal/_xwrap.js\");\nvar bind = __webpack_require__(/*! ../bind */ \"./node_modules/ramda/src/bind.js\");\n\nmodule.exports = function () {\n  function _arrayReduce(xf, acc, list) {\n    var idx = 0;\n    var len = list.length;\n    while (idx < len) {\n      acc = xf['@@transducer/step'](acc, list[idx]);\n      if (acc && acc['@@transducer/reduced']) {\n        acc = acc['@@transducer/value'];\n        break;\n      }\n      idx += 1;\n    }\n    return xf['@@transducer/result'](acc);\n  }\n\n  function _iterableReduce(xf, acc, iter) {\n    var step = iter.next();\n    while (!step.done) {\n      acc = xf['@@transducer/step'](acc, step.value);\n      if (acc && acc['@@transducer/reduced']) {\n        acc = acc['@@transducer/value'];\n        break;\n      }\n      step = iter.next();\n    }\n    return xf['@@transducer/result'](acc);\n  }\n\n  function _methodReduce(xf, acc, obj, methodName) {\n    return xf['@@transducer/result'](obj[methodName](bind(xf['@@transducer/step'], xf), acc));\n  }\n\n  var symIterator = typeof Symbol !== 'undefined' ? Symbol.iterator : '@@iterator';\n  return function _reduce(fn, acc, list) {\n    if (typeof fn === 'function') {\n      fn = _xwrap(fn);\n    }\n    if (_isArrayLike(list)) {\n      return _arrayReduce(fn, acc, list);\n    }\n    if (typeof list['fantasy-land/reduce'] === 'function') {\n      return _methodReduce(fn, acc, list, 'fantasy-land/reduce');\n    }\n    if (list[symIterator] != null) {\n      return _iterableReduce(fn, acc, list[symIterator]());\n    }\n    if (typeof list.next === 'function') {\n      return _iterableReduce(fn, acc, list);\n    }\n    if (typeof list.reduce === 'function') {\n      return _methodReduce(fn, acc, list, 'reduce');\n    }\n\n    throw new TypeError('reduce: list must be array or iterable');\n  };\n}();\n\n//# sourceURL=webpack:///./node_modules/ramda/src/internal/_reduce.js?");
+
+/***/ }),
+
+/***/ "./node_modules/ramda/src/internal/_reduced.js":
+/*!*****************************************************!*\
+  !*** ./node_modules/ramda/src/internal/_reduced.js ***!
+  \*****************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nmodule.exports = function _reduced(x) {\n  return x && x['@@transducer/reduced'] ? x : {\n    '@@transducer/value': x,\n    '@@transducer/reduced': true\n  };\n};\n\n//# sourceURL=webpack:///./node_modules/ramda/src/internal/_reduced.js?");
+
+/***/ }),
+
+/***/ "./node_modules/ramda/src/internal/_toISOString.js":
+/*!*********************************************************!*\
+  !*** ./node_modules/ramda/src/internal/_toISOString.js ***!
+  \*********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\n/**\n * Polyfill from <https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString>.\n */\nmodule.exports = function () {\n  var pad = function pad(n) {\n    return (n < 10 ? '0' : '') + n;\n  };\n\n  return typeof Date.prototype.toISOString === 'function' ? function _toISOString(d) {\n    return d.toISOString();\n  } : function _toISOString(d) {\n    return d.getUTCFullYear() + '-' + pad(d.getUTCMonth() + 1) + '-' + pad(d.getUTCDate()) + 'T' + pad(d.getUTCHours()) + ':' + pad(d.getUTCMinutes()) + ':' + pad(d.getUTCSeconds()) + '.' + (d.getUTCMilliseconds() / 1000).toFixed(3).slice(2, 5) + 'Z';\n  };\n}();\n\n//# sourceURL=webpack:///./node_modules/ramda/src/internal/_toISOString.js?");
+
+/***/ }),
+
+/***/ "./node_modules/ramda/src/internal/_toString.js":
+/*!******************************************************!*\
+  !*** ./node_modules/ramda/src/internal/_toString.js ***!
+  \******************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nvar _typeof = typeof Symbol === \"function\" && typeof Symbol.iterator === \"symbol\" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === \"function\" && obj.constructor === Symbol && obj !== Symbol.prototype ? \"symbol\" : typeof obj; };\n\nvar _contains = __webpack_require__(/*! ./_contains */ \"./node_modules/ramda/src/internal/_contains.js\");\nvar _map = __webpack_require__(/*! ./_map */ \"./node_modules/ramda/src/internal/_map.js\");\nvar _quote = __webpack_require__(/*! ./_quote */ \"./node_modules/ramda/src/internal/_quote.js\");\nvar _toISOString = __webpack_require__(/*! ./_toISOString */ \"./node_modules/ramda/src/internal/_toISOString.js\");\nvar keys = __webpack_require__(/*! ../keys */ \"./node_modules/ramda/src/keys.js\");\nvar reject = __webpack_require__(/*! ../reject */ \"./node_modules/ramda/src/reject.js\");\n\nmodule.exports = function _toString(x, seen) {\n  var recur = function recur(y) {\n    var xs = seen.concat([x]);\n    return _contains(y, xs) ? '<Circular>' : _toString(y, xs);\n  };\n\n  //  mapPairs :: (Object, [String]) -> [String]\n  var mapPairs = function mapPairs(obj, keys) {\n    return _map(function (k) {\n      return _quote(k) + ': ' + recur(obj[k]);\n    }, keys.slice().sort());\n  };\n\n  switch (Object.prototype.toString.call(x)) {\n    case '[object Arguments]':\n      return '(function() { return arguments; }(' + _map(recur, x).join(', ') + '))';\n    case '[object Array]':\n      return '[' + _map(recur, x).concat(mapPairs(x, reject(function (k) {\n        return (/^\\d+$/.test(k)\n        );\n      }, keys(x)))).join(', ') + ']';\n    case '[object Boolean]':\n      return (typeof x === 'undefined' ? 'undefined' : _typeof(x)) === 'object' ? 'new Boolean(' + recur(x.valueOf()) + ')' : x.toString();\n    case '[object Date]':\n      return 'new Date(' + (isNaN(x.valueOf()) ? recur(NaN) : _quote(_toISOString(x))) + ')';\n    case '[object Null]':\n      return 'null';\n    case '[object Number]':\n      return (typeof x === 'undefined' ? 'undefined' : _typeof(x)) === 'object' ? 'new Number(' + recur(x.valueOf()) + ')' : 1 / x === -Infinity ? '-0' : x.toString(10);\n    case '[object String]':\n      return (typeof x === 'undefined' ? 'undefined' : _typeof(x)) === 'object' ? 'new String(' + recur(x.valueOf()) + ')' : _quote(x);\n    case '[object Undefined]':\n      return 'undefined';\n    default:\n      if (typeof x.toString === 'function') {\n        var repr = x.toString();\n        if (repr !== '[object Object]') {\n          return repr;\n        }\n      }\n      return '{' + mapPairs(x, keys(x)).join(', ') + '}';\n  }\n};\n\n//# sourceURL=webpack:///./node_modules/ramda/src/internal/_toString.js?");
+
+/***/ }),
+
+/***/ "./node_modules/ramda/src/internal/_xany.js":
+/*!**************************************************!*\
+  !*** ./node_modules/ramda/src/internal/_xany.js ***!
+  \**************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nvar _curry2 = __webpack_require__(/*! ./_curry2 */ \"./node_modules/ramda/src/internal/_curry2.js\");\nvar _reduced = __webpack_require__(/*! ./_reduced */ \"./node_modules/ramda/src/internal/_reduced.js\");\nvar _xfBase = __webpack_require__(/*! ./_xfBase */ \"./node_modules/ramda/src/internal/_xfBase.js\");\n\nmodule.exports = function () {\n  function XAny(f, xf) {\n    this.xf = xf;\n    this.f = f;\n    this.any = false;\n  }\n  XAny.prototype['@@transducer/init'] = _xfBase.init;\n  XAny.prototype['@@transducer/result'] = function (result) {\n    if (!this.any) {\n      result = this.xf['@@transducer/step'](result, false);\n    }\n    return this.xf['@@transducer/result'](result);\n  };\n  XAny.prototype['@@transducer/step'] = function (result, input) {\n    if (this.f(input)) {\n      this.any = true;\n      result = _reduced(this.xf['@@transducer/step'](result, true));\n    }\n    return result;\n  };\n\n  return _curry2(function _xany(f, xf) {\n    return new XAny(f, xf);\n  });\n}();\n\n//# sourceURL=webpack:///./node_modules/ramda/src/internal/_xany.js?");
+
+/***/ }),
+
+/***/ "./node_modules/ramda/src/internal/_xfBase.js":
+/*!****************************************************!*\
+  !*** ./node_modules/ramda/src/internal/_xfBase.js ***!
+  \****************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nmodule.exports = {\n  init: function init() {\n    return this.xf['@@transducer/init']();\n  },\n  result: function result(_result) {\n    return this.xf['@@transducer/result'](_result);\n  }\n};\n\n//# sourceURL=webpack:///./node_modules/ramda/src/internal/_xfBase.js?");
+
+/***/ }),
+
+/***/ "./node_modules/ramda/src/internal/_xfilter.js":
+/*!*****************************************************!*\
+  !*** ./node_modules/ramda/src/internal/_xfilter.js ***!
+  \*****************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nvar _curry2 = __webpack_require__(/*! ./_curry2 */ \"./node_modules/ramda/src/internal/_curry2.js\");\nvar _xfBase = __webpack_require__(/*! ./_xfBase */ \"./node_modules/ramda/src/internal/_xfBase.js\");\n\nmodule.exports = function () {\n  function XFilter(f, xf) {\n    this.xf = xf;\n    this.f = f;\n  }\n  XFilter.prototype['@@transducer/init'] = _xfBase.init;\n  XFilter.prototype['@@transducer/result'] = _xfBase.result;\n  XFilter.prototype['@@transducer/step'] = function (result, input) {\n    return this.f(input) ? this.xf['@@transducer/step'](result, input) : result;\n  };\n\n  return _curry2(function _xfilter(f, xf) {\n    return new XFilter(f, xf);\n  });\n}();\n\n//# sourceURL=webpack:///./node_modules/ramda/src/internal/_xfilter.js?");
+
+/***/ }),
+
+/***/ "./node_modules/ramda/src/internal/_xmap.js":
+/*!**************************************************!*\
+  !*** ./node_modules/ramda/src/internal/_xmap.js ***!
+  \**************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nvar _curry2 = __webpack_require__(/*! ./_curry2 */ \"./node_modules/ramda/src/internal/_curry2.js\");\nvar _xfBase = __webpack_require__(/*! ./_xfBase */ \"./node_modules/ramda/src/internal/_xfBase.js\");\n\nmodule.exports = function () {\n  function XMap(f, xf) {\n    this.xf = xf;\n    this.f = f;\n  }\n  XMap.prototype['@@transducer/init'] = _xfBase.init;\n  XMap.prototype['@@transducer/result'] = _xfBase.result;\n  XMap.prototype['@@transducer/step'] = function (result, input) {\n    return this.xf['@@transducer/step'](result, this.f(input));\n  };\n\n  return _curry2(function _xmap(f, xf) {\n    return new XMap(f, xf);\n  });\n}();\n\n//# sourceURL=webpack:///./node_modules/ramda/src/internal/_xmap.js?");
+
+/***/ }),
+
+/***/ "./node_modules/ramda/src/internal/_xwrap.js":
+/*!***************************************************!*\
+  !*** ./node_modules/ramda/src/internal/_xwrap.js ***!
+  \***************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nmodule.exports = function () {\n  function XWrap(fn) {\n    this.f = fn;\n  }\n  XWrap.prototype['@@transducer/init'] = function () {\n    throw new Error('init not implemented on XWrap');\n  };\n  XWrap.prototype['@@transducer/result'] = function (acc) {\n    return acc;\n  };\n  XWrap.prototype['@@transducer/step'] = function (acc, x) {\n    return this.f(acc, x);\n  };\n\n  return function _xwrap(fn) {\n    return new XWrap(fn);\n  };\n}();\n\n//# sourceURL=webpack:///./node_modules/ramda/src/internal/_xwrap.js?");
+
+/***/ }),
+
+/***/ "./node_modules/ramda/src/invoker.js":
+/*!*******************************************!*\
+  !*** ./node_modules/ramda/src/invoker.js ***!
+  \*******************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nvar _curry2 = __webpack_require__(/*! ./internal/_curry2 */ \"./node_modules/ramda/src/internal/_curry2.js\");\nvar _isFunction = __webpack_require__(/*! ./internal/_isFunction */ \"./node_modules/ramda/src/internal/_isFunction.js\");\nvar curryN = __webpack_require__(/*! ./curryN */ \"./node_modules/ramda/src/curryN.js\");\nvar toString = __webpack_require__(/*! ./toString */ \"./node_modules/ramda/src/toString.js\");\n\n/**\n * Turns a named method with a specified arity into a function that can be\n * called directly supplied with arguments and a target object.\n *\n * The returned function is curried and accepts `arity + 1` parameters where\n * the final parameter is the target object.\n *\n * @func\n * @memberOf R\n * @since v0.1.0\n * @category Function\n * @sig Number -> String -> (a -> b -> ... -> n -> Object -> *)\n * @param {Number} arity Number of arguments the returned function should take\n *        before the target object.\n * @param {String} method Name of the method to call.\n * @return {Function} A new curried function.\n * @see R.construct\n * @example\n *\n *      var sliceFrom = R.invoker(1, 'slice');\n *      sliceFrom(6, 'abcdefghijklm'); //=> 'ghijklm'\n *      var sliceFrom6 = R.invoker(2, 'slice')(6);\n *      sliceFrom6(8, 'abcdefghijklm'); //=> 'gh'\n * @symb R.invoker(0, 'method')(o) = o['method']()\n * @symb R.invoker(1, 'method')(a, o) = o['method'](a)\n * @symb R.invoker(2, 'method')(a, b, o) = o['method'](a, b)\n */\nmodule.exports = _curry2(function invoker(arity, method) {\n  return curryN(arity + 1, function () {\n    var target = arguments[arity];\n    if (target != null && _isFunction(target[method])) {\n      return target[method].apply(target, Array.prototype.slice.call(arguments, 0, arity));\n    }\n    throw new TypeError(toString(target) + ' does not have a method named \"' + method + '\"');\n  });\n});\n\n//# sourceURL=webpack:///./node_modules/ramda/src/invoker.js?");
+
+/***/ }),
+
+/***/ "./node_modules/ramda/src/is.js":
+/*!**************************************!*\
+  !*** ./node_modules/ramda/src/is.js ***!
+  \**************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nvar _curry2 = __webpack_require__(/*! ./internal/_curry2 */ \"./node_modules/ramda/src/internal/_curry2.js\");\n\n/**\n * See if an object (`val`) is an instance of the supplied constructor. This\n * function will check up the inheritance chain, if any.\n *\n * @func\n * @memberOf R\n * @since v0.3.0\n * @category Type\n * @sig (* -> {*}) -> a -> Boolean\n * @param {Object} ctor A constructor\n * @param {*} val The value to test\n * @return {Boolean}\n * @example\n *\n *      R.is(Object, {}); //=> true\n *      R.is(Number, 1); //=> true\n *      R.is(Object, 1); //=> false\n *      R.is(String, 's'); //=> true\n *      R.is(String, new String('')); //=> true\n *      R.is(Object, new String('')); //=> true\n *      R.is(Object, 's'); //=> false\n *      R.is(Number, {}); //=> false\n */\nmodule.exports = _curry2(function is(Ctor, val) {\n  return val != null && val.constructor === Ctor || val instanceof Ctor;\n});\n\n//# sourceURL=webpack:///./node_modules/ramda/src/is.js?");
+
+/***/ }),
+
+/***/ "./node_modules/ramda/src/isEmpty.js":
+/*!*******************************************!*\
+  !*** ./node_modules/ramda/src/isEmpty.js ***!
+  \*******************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nvar _curry1 = __webpack_require__(/*! ./internal/_curry1 */ \"./node_modules/ramda/src/internal/_curry1.js\");\nvar empty = __webpack_require__(/*! ./empty */ \"./node_modules/ramda/src/empty.js\");\nvar equals = __webpack_require__(/*! ./equals */ \"./node_modules/ramda/src/equals.js\");\n\n/**\n * Returns `true` if the given value is its type's empty value; `false`\n * otherwise.\n *\n * @func\n * @memberOf R\n * @since v0.1.0\n * @category Logic\n * @sig a -> Boolean\n * @param {*} x\n * @return {Boolean}\n * @see R.empty\n * @example\n *\n *      R.isEmpty([1, 2, 3]);   //=> false\n *      R.isEmpty([]);          //=> true\n *      R.isEmpty('');          //=> true\n *      R.isEmpty(null);        //=> false\n *      R.isEmpty({});          //=> true\n *      R.isEmpty({length: 0}); //=> false\n */\nmodule.exports = _curry1(function isEmpty(x) {\n  return x != null && equals(x, empty(x));\n});\n\n//# sourceURL=webpack:///./node_modules/ramda/src/isEmpty.js?");
+
+/***/ }),
+
+/***/ "./node_modules/ramda/src/isNil.js":
+/*!*****************************************!*\
+  !*** ./node_modules/ramda/src/isNil.js ***!
+  \*****************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nvar _curry1 = __webpack_require__(/*! ./internal/_curry1 */ \"./node_modules/ramda/src/internal/_curry1.js\");\n\n/**\n * Checks if the input value is `null` or `undefined`.\n *\n * @func\n * @memberOf R\n * @since v0.9.0\n * @category Type\n * @sig * -> Boolean\n * @param {*} x The value to test.\n * @return {Boolean} `true` if `x` is `undefined` or `null`, otherwise `false`.\n * @example\n *\n *      R.isNil(null); //=> true\n *      R.isNil(undefined); //=> true\n *      R.isNil(0); //=> false\n *      R.isNil([]); //=> false\n */\nmodule.exports = _curry1(function isNil(x) {\n  return x == null;\n});\n\n//# sourceURL=webpack:///./node_modules/ramda/src/isNil.js?");
+
+/***/ }),
+
+/***/ "./node_modules/ramda/src/join.js":
+/*!****************************************!*\
+  !*** ./node_modules/ramda/src/join.js ***!
+  \****************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nvar invoker = __webpack_require__(/*! ./invoker */ \"./node_modules/ramda/src/invoker.js\");\n\n/**\n * Returns a string made by inserting the `separator` between each element and\n * concatenating all the elements into a single string.\n *\n * @func\n * @memberOf R\n * @since v0.1.0\n * @category List\n * @sig String -> [a] -> String\n * @param {Number|String} separator The string used to separate the elements.\n * @param {Array} xs The elements to join into a string.\n * @return {String} str The string made by concatenating `xs` with `separator`.\n * @see R.split\n * @example\n *\n *      var spacer = R.join(' ');\n *      spacer(['a', 2, 3.4]);   //=> 'a 2 3.4'\n *      R.join('|', [1, 2, 3]);    //=> '1|2|3'\n */\nmodule.exports = invoker(1, 'join');\n\n//# sourceURL=webpack:///./node_modules/ramda/src/join.js?");
+
+/***/ }),
+
+/***/ "./node_modules/ramda/src/keys.js":
+/*!****************************************!*\
+  !*** ./node_modules/ramda/src/keys.js ***!
+  \****************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nvar _curry1 = __webpack_require__(/*! ./internal/_curry1 */ \"./node_modules/ramda/src/internal/_curry1.js\");\nvar _has = __webpack_require__(/*! ./internal/_has */ \"./node_modules/ramda/src/internal/_has.js\");\nvar _isArguments = __webpack_require__(/*! ./internal/_isArguments */ \"./node_modules/ramda/src/internal/_isArguments.js\");\n\n/**\n * Returns a list containing the names of all the enumerable own properties of\n * the supplied object.\n * Note that the order of the output array is not guaranteed to be consistent\n * across different JS platforms.\n *\n * @func\n * @memberOf R\n * @since v0.1.0\n * @category Object\n * @sig {k: v} -> [k]\n * @param {Object} obj The object to extract properties from\n * @return {Array} An array of the object's own properties.\n * @see R.keysIn, R.values\n * @example\n *\n *      R.keys({a: 1, b: 2, c: 3}); //=> ['a', 'b', 'c']\n */\nmodule.exports = function () {\n  // cover IE < 9 keys issues\n  var hasEnumBug = !{ toString: null }.propertyIsEnumerable('toString');\n  var nonEnumerableProps = ['constructor', 'valueOf', 'isPrototypeOf', 'toString', 'propertyIsEnumerable', 'hasOwnProperty', 'toLocaleString'];\n  // Safari bug\n  var hasArgsEnumBug = function () {\n    'use strict';\n\n    return arguments.propertyIsEnumerable('length');\n  }();\n\n  var contains = function contains(list, item) {\n    var idx = 0;\n    while (idx < list.length) {\n      if (list[idx] === item) {\n        return true;\n      }\n      idx += 1;\n    }\n    return false;\n  };\n\n  return typeof Object.keys === 'function' && !hasArgsEnumBug ? _curry1(function keys(obj) {\n    return Object(obj) !== obj ? [] : Object.keys(obj);\n  }) : _curry1(function keys(obj) {\n    if (Object(obj) !== obj) {\n      return [];\n    }\n    var prop, nIdx;\n    var ks = [];\n    var checkArgsLength = hasArgsEnumBug && _isArguments(obj);\n    for (prop in obj) {\n      if (_has(prop, obj) && (!checkArgsLength || prop !== 'length')) {\n        ks[ks.length] = prop;\n      }\n    }\n    if (hasEnumBug) {\n      nIdx = nonEnumerableProps.length - 1;\n      while (nIdx >= 0) {\n        prop = nonEnumerableProps[nIdx];\n        if (_has(prop, obj) && !contains(ks, prop)) {\n          ks[ks.length] = prop;\n        }\n        nIdx -= 1;\n      }\n    }\n    return ks;\n  });\n}();\n\n//# sourceURL=webpack:///./node_modules/ramda/src/keys.js?");
+
+/***/ }),
+
+/***/ "./node_modules/ramda/src/map.js":
+/*!***************************************!*\
+  !*** ./node_modules/ramda/src/map.js ***!
+  \***************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nvar _curry2 = __webpack_require__(/*! ./internal/_curry2 */ \"./node_modules/ramda/src/internal/_curry2.js\");\nvar _dispatchable = __webpack_require__(/*! ./internal/_dispatchable */ \"./node_modules/ramda/src/internal/_dispatchable.js\");\nvar _map = __webpack_require__(/*! ./internal/_map */ \"./node_modules/ramda/src/internal/_map.js\");\nvar _reduce = __webpack_require__(/*! ./internal/_reduce */ \"./node_modules/ramda/src/internal/_reduce.js\");\nvar _xmap = __webpack_require__(/*! ./internal/_xmap */ \"./node_modules/ramda/src/internal/_xmap.js\");\nvar curryN = __webpack_require__(/*! ./curryN */ \"./node_modules/ramda/src/curryN.js\");\nvar keys = __webpack_require__(/*! ./keys */ \"./node_modules/ramda/src/keys.js\");\n\n/**\n * Takes a function and\n * a [functor](https://github.com/fantasyland/fantasy-land#functor),\n * applies the function to each of the functor's values, and returns\n * a functor of the same shape.\n *\n * Ramda provides suitable `map` implementations for `Array` and `Object`,\n * so this function may be applied to `[1, 2, 3]` or `{x: 1, y: 2, z: 3}`.\n *\n * Dispatches to the `map` method of the second argument, if present.\n *\n * Acts as a transducer if a transformer is given in list position.\n *\n * Also treats functions as functors and will compose them together.\n *\n * @func\n * @memberOf R\n * @since v0.1.0\n * @category List\n * @sig Functor f => (a -> b) -> f a -> f b\n * @param {Function} fn The function to be called on every element of the input `list`.\n * @param {Array} list The list to be iterated over.\n * @return {Array} The new list.\n * @see R.transduce, R.addIndex\n * @example\n *\n *      var double = x => x * 2;\n *\n *      R.map(double, [1, 2, 3]); //=> [2, 4, 6]\n *\n *      R.map(double, {x: 1, y: 2, z: 3}); //=> {x: 2, y: 4, z: 6}\n * @symb R.map(f, [a, b]) = [f(a), f(b)]\n * @symb R.map(f, { x: a, y: b }) = { x: f(a), y: f(b) }\n * @symb R.map(f, functor_o) = functor_o.map(f)\n */\nmodule.exports = _curry2(_dispatchable(['fantasy-land/map', 'map'], _xmap, function map(fn, functor) {\n  switch (Object.prototype.toString.call(functor)) {\n    case '[object Function]':\n      return curryN(functor.length, function () {\n        return fn.call(this, functor.apply(this, arguments));\n      });\n    case '[object Object]':\n      return _reduce(function (acc, key) {\n        acc[key] = fn(functor[key]);\n        return acc;\n      }, {}, keys(functor));\n    default:\n      return _map(fn, functor);\n  }\n}));\n\n//# sourceURL=webpack:///./node_modules/ramda/src/map.js?");
+
+/***/ }),
+
+/***/ "./node_modules/ramda/src/mapObjIndexed.js":
+/*!*************************************************!*\
+  !*** ./node_modules/ramda/src/mapObjIndexed.js ***!
+  \*************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nvar _curry2 = __webpack_require__(/*! ./internal/_curry2 */ \"./node_modules/ramda/src/internal/_curry2.js\");\nvar _reduce = __webpack_require__(/*! ./internal/_reduce */ \"./node_modules/ramda/src/internal/_reduce.js\");\nvar keys = __webpack_require__(/*! ./keys */ \"./node_modules/ramda/src/keys.js\");\n\n/**\n * An Object-specific version of [`map`](#map). The function is applied to three\n * arguments: *(value, key, obj)*. If only the value is significant, use\n * [`map`](#map) instead.\n *\n * @func\n * @memberOf R\n * @since v0.9.0\n * @category Object\n * @sig ((*, String, Object) -> *) -> Object -> Object\n * @param {Function} fn\n * @param {Object} obj\n * @return {Object}\n * @see R.map\n * @example\n *\n *      var values = { x: 1, y: 2, z: 3 };\n *      var prependKeyAndDouble = (num, key, obj) => key + (num * 2);\n *\n *      R.mapObjIndexed(prependKeyAndDouble, values); //=> { x: 'x2', y: 'y4', z: 'z6' }\n */\nmodule.exports = _curry2(function mapObjIndexed(fn, obj) {\n  return _reduce(function (acc, key) {\n    acc[key] = fn(obj[key], key, obj);\n    return acc;\n  }, {}, keys(obj));\n});\n\n//# sourceURL=webpack:///./node_modules/ramda/src/mapObjIndexed.js?");
+
+/***/ }),
+
+/***/ "./node_modules/ramda/src/max.js":
+/*!***************************************!*\
+  !*** ./node_modules/ramda/src/max.js ***!
+  \***************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nvar _curry2 = __webpack_require__(/*! ./internal/_curry2 */ \"./node_modules/ramda/src/internal/_curry2.js\");\n\n/**\n * Returns the larger of its two arguments.\n *\n * @func\n * @memberOf R\n * @since v0.1.0\n * @category Relation\n * @sig Ord a => a -> a -> a\n * @param {*} a\n * @param {*} b\n * @return {*}\n * @see R.maxBy, R.min\n * @example\n *\n *      R.max(789, 123); //=> 789\n *      R.max('a', 'b'); //=> 'b'\n */\nmodule.exports = _curry2(function max(a, b) {\n  return b > a ? b : a;\n});\n\n//# sourceURL=webpack:///./node_modules/ramda/src/max.js?");
+
+/***/ }),
+
+/***/ "./node_modules/ramda/src/merge.js":
+/*!*****************************************!*\
+  !*** ./node_modules/ramda/src/merge.js ***!
+  \*****************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nvar _assign = __webpack_require__(/*! ./internal/_assign */ \"./node_modules/ramda/src/internal/_assign.js\");\nvar _curry2 = __webpack_require__(/*! ./internal/_curry2 */ \"./node_modules/ramda/src/internal/_curry2.js\");\n\n/**\n * Create a new object with the own properties of the first object merged with\n * the own properties of the second object. If a key exists in both objects,\n * the value from the second object will be used.\n *\n * @func\n * @memberOf R\n * @since v0.1.0\n * @category Object\n * @sig {k: v} -> {k: v} -> {k: v}\n * @param {Object} l\n * @param {Object} r\n * @return {Object}\n * @see R.mergeDeepRight, R.mergeWith, R.mergeWithKey\n * @example\n *\n *      R.merge({ 'name': 'fred', 'age': 10 }, { 'age': 40 });\n *      //=> { 'name': 'fred', 'age': 40 }\n *\n *      var resetToDefault = R.merge(R.__, {x: 0});\n *      resetToDefault({x: 5, y: 2}); //=> {x: 0, y: 2}\n * @symb R.merge({ x: 1, y: 2 }, { y: 5, z: 3 }) = { x: 1, y: 5, z: 3 }\n */\nmodule.exports = _curry2(function merge(l, r) {\n  return _assign({}, l, r);\n});\n\n//# sourceURL=webpack:///./node_modules/ramda/src/merge.js?");
+
+/***/ }),
+
+/***/ "./node_modules/ramda/src/pick.js":
+/*!****************************************!*\
+  !*** ./node_modules/ramda/src/pick.js ***!
+  \****************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nvar _curry2 = __webpack_require__(/*! ./internal/_curry2 */ \"./node_modules/ramda/src/internal/_curry2.js\");\n\n/**\n * Returns a partial copy of an object containing only the keys specified. If\n * the key does not exist, the property is ignored.\n *\n * @func\n * @memberOf R\n * @since v0.1.0\n * @category Object\n * @sig [k] -> {k: v} -> {k: v}\n * @param {Array} names an array of String property names to copy onto a new object\n * @param {Object} obj The object to copy from\n * @return {Object} A new object with only properties from `names` on it.\n * @see R.omit, R.props\n * @example\n *\n *      R.pick(['a', 'd'], {a: 1, b: 2, c: 3, d: 4}); //=> {a: 1, d: 4}\n *      R.pick(['a', 'e', 'f'], {a: 1, b: 2, c: 3, d: 4}); //=> {a: 1}\n */\nmodule.exports = _curry2(function pick(names, obj) {\n  var result = {};\n  var idx = 0;\n  while (idx < names.length) {\n    if (names[idx] in obj) {\n      result[names[idx]] = obj[names[idx]];\n    }\n    idx += 1;\n  }\n  return result;\n});\n\n//# sourceURL=webpack:///./node_modules/ramda/src/pick.js?");
+
+/***/ }),
+
+/***/ "./node_modules/ramda/src/pipe.js":
+/*!****************************************!*\
+  !*** ./node_modules/ramda/src/pipe.js ***!
+  \****************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nvar _arity = __webpack_require__(/*! ./internal/_arity */ \"./node_modules/ramda/src/internal/_arity.js\");\nvar _pipe = __webpack_require__(/*! ./internal/_pipe */ \"./node_modules/ramda/src/internal/_pipe.js\");\nvar reduce = __webpack_require__(/*! ./reduce */ \"./node_modules/ramda/src/reduce.js\");\nvar tail = __webpack_require__(/*! ./tail */ \"./node_modules/ramda/src/tail.js\");\n\n/**\n * Performs left-to-right function composition. The leftmost function may have\n * any arity; the remaining functions must be unary.\n *\n * In some libraries this function is named `sequence`.\n *\n * **Note:** The result of pipe is not automatically curried.\n *\n * @func\n * @memberOf R\n * @since v0.1.0\n * @category Function\n * @sig (((a, b, ..., n) -> o), (o -> p), ..., (x -> y), (y -> z)) -> ((a, b, ..., n) -> z)\n * @param {...Function} functions\n * @return {Function}\n * @see R.compose\n * @example\n *\n *      var f = R.pipe(Math.pow, R.negate, R.inc);\n *\n *      f(3, 4); // -(3^4) + 1\n * @symb R.pipe(f, g, h)(a, b) = h(g(f(a, b)))\n */\nmodule.exports = function pipe() {\n  if (arguments.length === 0) {\n    throw new Error('pipe requires at least one argument');\n  }\n  return _arity(arguments[0].length, reduce(_pipe, arguments[0], tail(arguments)));\n};\n\n//# sourceURL=webpack:///./node_modules/ramda/src/pipe.js?");
+
+/***/ }),
+
+/***/ "./node_modules/ramda/src/pluck.js":
+/*!*****************************************!*\
+  !*** ./node_modules/ramda/src/pluck.js ***!
+  \*****************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nvar _curry2 = __webpack_require__(/*! ./internal/_curry2 */ \"./node_modules/ramda/src/internal/_curry2.js\");\nvar map = __webpack_require__(/*! ./map */ \"./node_modules/ramda/src/map.js\");\nvar prop = __webpack_require__(/*! ./prop */ \"./node_modules/ramda/src/prop.js\");\n\n/**\n * Returns a new list by plucking the same named property off all objects in\n * the list supplied.\n *\n * `pluck` will work on\n * any [functor](https://github.com/fantasyland/fantasy-land#functor) in\n * addition to arrays, as it is equivalent to `R.map(R.prop(k), f)`.\n *\n * @func\n * @memberOf R\n * @since v0.1.0\n * @category List\n * @sig Functor f => k -> f {k: v} -> f v\n * @param {Number|String} key The key name to pluck off of each object.\n * @param {Array} f The array or functor to consider.\n * @return {Array} The list of values for the given key.\n * @see R.props\n * @example\n *\n *      R.pluck('a')([{a: 1}, {a: 2}]); //=> [1, 2]\n *      R.pluck(0)([[1, 2], [3, 4]]);   //=> [1, 3]\n *      R.pluck('val', {a: {val: 3}, b: {val: 5}}); //=> {a: 3, b: 5}\n * @symb R.pluck('x', [{x: 1, y: 2}, {x: 3, y: 4}, {x: 5, y: 6}]) = [1, 3, 5]\n * @symb R.pluck(0, [[1, 2], [3, 4], [5, 6]]) = [1, 3, 5]\n */\nmodule.exports = _curry2(function pluck(p, list) {\n  return map(prop(p), list);\n});\n\n//# sourceURL=webpack:///./node_modules/ramda/src/pluck.js?");
+
+/***/ }),
+
+/***/ "./node_modules/ramda/src/prop.js":
+/*!****************************************!*\
+  !*** ./node_modules/ramda/src/prop.js ***!
+  \****************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nvar _curry2 = __webpack_require__(/*! ./internal/_curry2 */ \"./node_modules/ramda/src/internal/_curry2.js\");\n\n/**\n * Returns a function that when supplied an object returns the indicated\n * property of that object, if it exists.\n *\n * @func\n * @memberOf R\n * @since v0.1.0\n * @category Object\n * @sig s -> {s: a} -> a | Undefined\n * @param {String} p The property name\n * @param {Object} obj The object to query\n * @return {*} The value at `obj.p`.\n * @see R.path\n * @example\n *\n *      R.prop('x', {x: 100}); //=> 100\n *      R.prop('x', {}); //=> undefined\n */\nmodule.exports = _curry2(function prop(p, obj) {\n  return obj[p];\n});\n\n//# sourceURL=webpack:///./node_modules/ramda/src/prop.js?");
+
+/***/ }),
+
+/***/ "./node_modules/ramda/src/reduce.js":
+/*!******************************************!*\
+  !*** ./node_modules/ramda/src/reduce.js ***!
+  \******************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nvar _curry3 = __webpack_require__(/*! ./internal/_curry3 */ \"./node_modules/ramda/src/internal/_curry3.js\");\nvar _reduce = __webpack_require__(/*! ./internal/_reduce */ \"./node_modules/ramda/src/internal/_reduce.js\");\n\n/**\n * Returns a single item by iterating through the list, successively calling\n * the iterator function and passing it an accumulator value and the current\n * value from the array, and then passing the result to the next call.\n *\n * The iterator function receives two values: *(acc, value)*. It may use\n * [`R.reduced`](#reduced) to shortcut the iteration.\n *\n * The arguments' order of [`reduceRight`](#reduceRight)'s iterator function\n * is *(value, acc)*.\n *\n * Note: `R.reduce` does not skip deleted or unassigned indices (sparse\n * arrays), unlike the native `Array.prototype.reduce` method. For more details\n * on this behavior, see:\n * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/reduce#Description\n *\n * Dispatches to the `reduce` method of the third argument, if present. When\n * doing so, it is up to the user to handle the [`R.reduced`](#reduced)\n * shortcuting, as this is not implemented by `reduce`.\n *\n * @func\n * @memberOf R\n * @since v0.1.0\n * @category List\n * @sig ((a, b) -> a) -> a -> [b] -> a\n * @param {Function} fn The iterator function. Receives two values, the accumulator and the\n *        current element from the array.\n * @param {*} acc The accumulator value.\n * @param {Array} list The list to iterate over.\n * @return {*} The final, accumulated value.\n * @see R.reduced, R.addIndex, R.reduceRight\n * @example\n *\n *      R.reduce(R.subtract, 0, [1, 2, 3, 4]) // => ((((0 - 1) - 2) - 3) - 4) = -10\n *                -               -10\n *               / \\              / \\\n *              -   4           -6   4\n *             / \\              / \\\n *            -   3   ==>     -3   3\n *           / \\              / \\\n *          -   2           -1   2\n *         / \\              / \\\n *        0   1            0   1\n *\n * @symb R.reduce(f, a, [b, c, d]) = f(f(f(a, b), c), d)\n */\nmodule.exports = _curry3(_reduce);\n\n//# sourceURL=webpack:///./node_modules/ramda/src/reduce.js?");
+
+/***/ }),
+
+/***/ "./node_modules/ramda/src/reject.js":
+/*!******************************************!*\
+  !*** ./node_modules/ramda/src/reject.js ***!
+  \******************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nvar _complement = __webpack_require__(/*! ./internal/_complement */ \"./node_modules/ramda/src/internal/_complement.js\");\nvar _curry2 = __webpack_require__(/*! ./internal/_curry2 */ \"./node_modules/ramda/src/internal/_curry2.js\");\nvar filter = __webpack_require__(/*! ./filter */ \"./node_modules/ramda/src/filter.js\");\n\n/**\n * The complement of [`filter`](#filter).\n *\n * Acts as a transducer if a transformer is given in list position. Filterable\n * objects include plain objects or any object that has a filter method such\n * as `Array`.\n *\n * @func\n * @memberOf R\n * @since v0.1.0\n * @category List\n * @sig Filterable f => (a -> Boolean) -> f a -> f a\n * @param {Function} pred\n * @param {Array} filterable\n * @return {Array}\n * @see R.filter, R.transduce, R.addIndex\n * @example\n *\n *      var isOdd = (n) => n % 2 === 1;\n *\n *      R.reject(isOdd, [1, 2, 3, 4]); //=> [2, 4]\n *\n *      R.reject(isOdd, {a: 1, b: 2, c: 3, d: 4}); //=> {b: 2, d: 4}\n */\nmodule.exports = _curry2(function reject(pred, filterable) {\n  return filter(_complement(pred), filterable);\n});\n\n//# sourceURL=webpack:///./node_modules/ramda/src/reject.js?");
+
+/***/ }),
+
+/***/ "./node_modules/ramda/src/replace.js":
+/*!*******************************************!*\
+  !*** ./node_modules/ramda/src/replace.js ***!
+  \*******************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nvar _curry3 = __webpack_require__(/*! ./internal/_curry3 */ \"./node_modules/ramda/src/internal/_curry3.js\");\n\n/**\n * Replace a substring or regex match in a string with a replacement.\n *\n * @func\n * @memberOf R\n * @since v0.7.0\n * @category String\n * @sig RegExp|String -> String -> String -> String\n * @param {RegExp|String} pattern A regular expression or a substring to match.\n * @param {String} replacement The string to replace the matches with.\n * @param {String} str The String to do the search and replacement in.\n * @return {String} The result.\n * @example\n *\n *      R.replace('foo', 'bar', 'foo foo foo'); //=> 'bar foo foo'\n *      R.replace(/foo/, 'bar', 'foo foo foo'); //=> 'bar foo foo'\n *\n *      // Use the \"g\" (global) flag to replace all occurrences:\n *      R.replace(/foo/g, 'bar', 'foo foo foo'); //=> 'bar bar bar'\n */\nmodule.exports = _curry3(function replace(regex, replacement, str) {\n  return str.replace(regex, replacement);\n});\n\n//# sourceURL=webpack:///./node_modules/ramda/src/replace.js?");
+
+/***/ }),
+
+/***/ "./node_modules/ramda/src/slice.js":
+/*!*****************************************!*\
+  !*** ./node_modules/ramda/src/slice.js ***!
+  \*****************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nvar _checkForMethod = __webpack_require__(/*! ./internal/_checkForMethod */ \"./node_modules/ramda/src/internal/_checkForMethod.js\");\nvar _curry3 = __webpack_require__(/*! ./internal/_curry3 */ \"./node_modules/ramda/src/internal/_curry3.js\");\n\n/**\n * Returns the elements of the given list or string (or object with a `slice`\n * method) from `fromIndex` (inclusive) to `toIndex` (exclusive).\n *\n * Dispatches to the `slice` method of the third argument, if present.\n *\n * @func\n * @memberOf R\n * @since v0.1.4\n * @category List\n * @sig Number -> Number -> [a] -> [a]\n * @sig Number -> Number -> String -> String\n * @param {Number} fromIndex The start index (inclusive).\n * @param {Number} toIndex The end index (exclusive).\n * @param {*} list\n * @return {*}\n * @example\n *\n *      R.slice(1, 3, ['a', 'b', 'c', 'd']);        //=> ['b', 'c']\n *      R.slice(1, Infinity, ['a', 'b', 'c', 'd']); //=> ['b', 'c', 'd']\n *      R.slice(0, -1, ['a', 'b', 'c', 'd']);       //=> ['a', 'b', 'c']\n *      R.slice(-3, -1, ['a', 'b', 'c', 'd']);      //=> ['b', 'c']\n *      R.slice(0, 3, 'ramda');                     //=> 'ram'\n */\nmodule.exports = _curry3(_checkForMethod('slice', function slice(fromIndex, toIndex, list) {\n  return Array.prototype.slice.call(list, fromIndex, toIndex);\n}));\n\n//# sourceURL=webpack:///./node_modules/ramda/src/slice.js?");
+
+/***/ }),
+
+/***/ "./node_modules/ramda/src/split.js":
+/*!*****************************************!*\
+  !*** ./node_modules/ramda/src/split.js ***!
+  \*****************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nvar invoker = __webpack_require__(/*! ./invoker */ \"./node_modules/ramda/src/invoker.js\");\n\n/**\n * Splits a string into an array of strings based on the given\n * separator.\n *\n * @func\n * @memberOf R\n * @since v0.1.0\n * @category String\n * @sig (String | RegExp) -> String -> [String]\n * @param {String|RegExp} sep The pattern.\n * @param {String} str The string to separate into an array.\n * @return {Array} The array of strings from `str` separated by `str`.\n * @see R.join\n * @example\n *\n *      var pathComponents = R.split('/');\n *      R.tail(pathComponents('/usr/local/bin/node')); //=> ['usr', 'local', 'bin', 'node']\n *\n *      R.split('.', 'a.b.c.xyz.d'); //=> ['a', 'b', 'c', 'xyz', 'd']\n */\nmodule.exports = invoker(1, 'split');\n\n//# sourceURL=webpack:///./node_modules/ramda/src/split.js?");
+
+/***/ }),
+
+/***/ "./node_modules/ramda/src/tail.js":
+/*!****************************************!*\
+  !*** ./node_modules/ramda/src/tail.js ***!
+  \****************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nvar _checkForMethod = __webpack_require__(/*! ./internal/_checkForMethod */ \"./node_modules/ramda/src/internal/_checkForMethod.js\");\nvar _curry1 = __webpack_require__(/*! ./internal/_curry1 */ \"./node_modules/ramda/src/internal/_curry1.js\");\nvar slice = __webpack_require__(/*! ./slice */ \"./node_modules/ramda/src/slice.js\");\n\n/**\n * Returns all but the first element of the given list or string (or object\n * with a `tail` method).\n *\n * Dispatches to the `slice` method of the first argument, if present.\n *\n * @func\n * @memberOf R\n * @since v0.1.0\n * @category List\n * @sig [a] -> [a]\n * @sig String -> String\n * @param {*} list\n * @return {*}\n * @see R.head, R.init, R.last\n * @example\n *\n *      R.tail([1, 2, 3]);  //=> [2, 3]\n *      R.tail([1, 2]);     //=> [2]\n *      R.tail([1]);        //=> []\n *      R.tail([]);         //=> []\n *\n *      R.tail('abc');  //=> 'bc'\n *      R.tail('ab');   //=> 'b'\n *      R.tail('a');    //=> ''\n *      R.tail('');     //=> ''\n */\nmodule.exports = _curry1(_checkForMethod('tail', slice(1, Infinity)));\n\n//# sourceURL=webpack:///./node_modules/ramda/src/tail.js?");
+
+/***/ }),
+
+/***/ "./node_modules/ramda/src/toString.js":
+/*!********************************************!*\
+  !*** ./node_modules/ramda/src/toString.js ***!
+  \********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nvar _curry1 = __webpack_require__(/*! ./internal/_curry1 */ \"./node_modules/ramda/src/internal/_curry1.js\");\nvar _toString = __webpack_require__(/*! ./internal/_toString */ \"./node_modules/ramda/src/internal/_toString.js\");\n\n/**\n * Returns the string representation of the given value. `eval`'ing the output\n * should result in a value equivalent to the input value. Many of the built-in\n * `toString` methods do not satisfy this requirement.\n *\n * If the given value is an `[object Object]` with a `toString` method other\n * than `Object.prototype.toString`, this method is invoked with no arguments\n * to produce the return value. This means user-defined constructor functions\n * can provide a suitable `toString` method. For example:\n *\n *     function Point(x, y) {\n *       this.x = x;\n *       this.y = y;\n *     }\n *\n *     Point.prototype.toString = function() {\n *       return 'new Point(' + this.x + ', ' + this.y + ')';\n *     };\n *\n *     R.toString(new Point(1, 2)); //=> 'new Point(1, 2)'\n *\n * @func\n * @memberOf R\n * @since v0.14.0\n * @category String\n * @sig * -> String\n * @param {*} val\n * @return {String}\n * @example\n *\n *      R.toString(42); //=> '42'\n *      R.toString('abc'); //=> '\"abc\"'\n *      R.toString([1, 2, 3]); //=> '[1, 2, 3]'\n *      R.toString({foo: 1, bar: 2, baz: 3}); //=> '{\"bar\": 2, \"baz\": 3, \"foo\": 1}'\n *      R.toString(new Date('2001-02-03T04:05:06Z')); //=> 'new Date(\"2001-02-03T04:05:06.000Z\")'\n */\nmodule.exports = _curry1(function toString(val) {\n  return _toString(val, []);\n});\n\n//# sourceURL=webpack:///./node_modules/ramda/src/toString.js?");
+
+/***/ }),
+
+/***/ "./node_modules/ramda/src/toUpper.js":
+/*!*******************************************!*\
+  !*** ./node_modules/ramda/src/toUpper.js ***!
+  \*******************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nvar invoker = __webpack_require__(/*! ./invoker */ \"./node_modules/ramda/src/invoker.js\");\n\n/**\n * The upper case version of a string.\n *\n * @func\n * @memberOf R\n * @since v0.9.0\n * @category String\n * @sig String -> String\n * @param {String} str The string to upper case.\n * @return {String} The upper case version of `str`.\n * @see R.toLower\n * @example\n *\n *      R.toUpper('abc'); //=> 'ABC'\n */\nmodule.exports = invoker(0, 'toUpperCase');\n\n//# sourceURL=webpack:///./node_modules/ramda/src/toUpper.js?");
+
+/***/ }),
+
+/***/ "./node_modules/ramda/src/trim.js":
+/*!****************************************!*\
+  !*** ./node_modules/ramda/src/trim.js ***!
+  \****************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nvar _curry1 = __webpack_require__(/*! ./internal/_curry1 */ \"./node_modules/ramda/src/internal/_curry1.js\");\n\n/**\n * Removes (strips) whitespace from both ends of the string.\n *\n * @func\n * @memberOf R\n * @since v0.6.0\n * @category String\n * @sig String -> String\n * @param {String} str The string to trim.\n * @return {String} Trimmed version of `str`.\n * @example\n *\n *      R.trim('   xyz  '); //=> 'xyz'\n *      R.map(R.trim, R.split(',', 'x, y, z')); //=> ['x', 'y', 'z']\n */\nmodule.exports = function () {\n  var ws = '\\t\\n\\x0B\\f\\r \\xA0\\u1680\\u180E\\u2000\\u2001\\u2002\\u2003' + '\\u2004\\u2005\\u2006\\u2007\\u2008\\u2009\\u200A\\u202F\\u205F\\u3000\\u2028' + '\\u2029\\uFEFF';\n  var zeroWidth = '\\u200B';\n  var hasProtoTrim = typeof String.prototype.trim === 'function';\n  if (!hasProtoTrim || ws.trim() || !zeroWidth.trim()) {\n    return _curry1(function trim(str) {\n      var beginRx = new RegExp('^[' + ws + '][' + ws + ']*');\n      var endRx = new RegExp('[' + ws + '][' + ws + ']*$');\n      return str.replace(beginRx, '').replace(endRx, '');\n    });\n  } else {\n    return _curry1(function trim(str) {\n      return str.trim();\n    });\n  }\n}();\n\n//# sourceURL=webpack:///./node_modules/ramda/src/trim.js?");
+
+/***/ }),
+
+/***/ "./node_modules/ramda/src/type.js":
+/*!****************************************!*\
+  !*** ./node_modules/ramda/src/type.js ***!
+  \****************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nvar _curry1 = __webpack_require__(/*! ./internal/_curry1 */ \"./node_modules/ramda/src/internal/_curry1.js\");\n\n/**\n * Gives a single-word string description of the (native) type of a value,\n * returning such answers as 'Object', 'Number', 'Array', or 'Null'. Does not\n * attempt to distinguish user Object types any further, reporting them all as\n * 'Object'.\n *\n * @func\n * @memberOf R\n * @since v0.8.0\n * @category Type\n * @sig (* -> {*}) -> String\n * @param {*} val The value to test\n * @return {String}\n * @example\n *\n *      R.type({}); //=> \"Object\"\n *      R.type(1); //=> \"Number\"\n *      R.type(false); //=> \"Boolean\"\n *      R.type('s'); //=> \"String\"\n *      R.type(null); //=> \"Null\"\n *      R.type([]); //=> \"Array\"\n *      R.type(/[A-z]/); //=> \"RegExp\"\n *      R.type(() => {}); //=> \"Function\"\n */\nmodule.exports = _curry1(function type(val) {\n  return val === null ? 'Null' : val === undefined ? 'Undefined' : Object.prototype.toString.call(val).slice(8, -1);\n});\n\n//# sourceURL=webpack:///./node_modules/ramda/src/type.js?");
+
+/***/ }),
+
+/***/ "./node_modules/ramda/src/zipObj.js":
+/*!******************************************!*\
+  !*** ./node_modules/ramda/src/zipObj.js ***!
+  \******************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nvar _curry2 = __webpack_require__(/*! ./internal/_curry2 */ \"./node_modules/ramda/src/internal/_curry2.js\");\n\n/**\n * Creates a new object out of a list of keys and a list of values.\n * Key/value pairing is truncated to the length of the shorter of the two lists.\n * Note: `zipObj` is equivalent to `pipe(zipWith(pair), fromPairs)`.\n *\n * @func\n * @memberOf R\n * @since v0.3.0\n * @category List\n * @sig [String] -> [*] -> {String: *}\n * @param {Array} keys The array that will be properties on the output object.\n * @param {Array} values The list of values on the output object.\n * @return {Object} The object made by pairing up same-indexed elements of `keys` and `values`.\n * @example\n *\n *      R.zipObj(['a', 'b', 'c'], [1, 2, 3]); //=> {a: 1, b: 2, c: 3}\n */\nmodule.exports = _curry2(function zipObj(keys, values) {\n  var idx = 0;\n  var len = Math.min(keys.length, values.length);\n  var out = {};\n  while (idx < len) {\n    out[keys[idx]] = values[idx];\n    idx += 1;\n  }\n  return out;\n});\n\n//# sourceURL=webpack:///./node_modules/ramda/src/zipObj.js?");
+
+/***/ }),
+
 /***/ "./node_modules/react-dom/cjs/react-dom.development.js":
 /*!*************************************************************!*\
   !*** ./node_modules/react-dom/cjs/react-dom.development.js ***!
@@ -1046,6 +1922,18 @@ eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\n
 
 /***/ }),
 
+/***/ "./node_modules/reduxsauce/dist/reduxsauce.js":
+/*!****************************************************!*\
+  !*** ./node_modules/reduxsauce/dist/reduxsauce.js ***!
+  \****************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nvar _typeof = typeof Symbol === \"function\" && typeof Symbol.iterator === \"symbol\" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === \"function\" && obj.constructor === Symbol && obj !== Symbol.prototype ? \"symbol\" : typeof obj; };\n\nObject.defineProperty(exports, '__esModule', { value: true });\n\nfunction _interopDefault(ex) {\n  return ex && (typeof ex === 'undefined' ? 'undefined' : _typeof(ex)) === 'object' && 'default' in ex ? ex['default'] : ex;\n}\n\nvar isNil = _interopDefault(__webpack_require__(/*! ramda/src/isNil */ \"./node_modules/ramda/src/isNil.js\"));\nvar is = _interopDefault(__webpack_require__(/*! ramda/src/is */ \"./node_modules/ramda/src/is.js\"));\nvar has = _interopDefault(__webpack_require__(/*! ramda/src/has */ \"./node_modules/ramda/src/has.js\"));\nvar any = _interopDefault(__webpack_require__(/*! ramda/src/any */ \"./node_modules/ramda/src/any.js\"));\nvar equals = _interopDefault(__webpack_require__(/*! ramda/src/equals */ \"./node_modules/ramda/src/equals.js\"));\nvar keys = _interopDefault(__webpack_require__(/*! ramda/src/keys */ \"./node_modules/ramda/src/keys.js\"));\nvar pipe = _interopDefault(__webpack_require__(/*! ramda/src/pipe */ \"./node_modules/ramda/src/pipe.js\"));\nvar trim = _interopDefault(__webpack_require__(/*! ramda/src/trim */ \"./node_modules/ramda/src/trim.js\"));\nvar merge = _interopDefault(__webpack_require__(/*! ramda/src/merge */ \"./node_modules/ramda/src/merge.js\"));\nvar split = _interopDefault(__webpack_require__(/*! ramda/src/split */ \"./node_modules/ramda/src/split.js\"));\nvar reject = _interopDefault(__webpack_require__(/*! ramda/src/reject */ \"./node_modules/ramda/src/reject.js\"));\nvar map = _interopDefault(__webpack_require__(/*! ramda/src/map */ \"./node_modules/ramda/src/map.js\"));\nvar fromPairs = _interopDefault(__webpack_require__(/*! ramda/src/fromPairs */ \"./node_modules/ramda/src/fromPairs.js\"));\nvar anyPass = _interopDefault(__webpack_require__(/*! ramda/src/anyPass */ \"./node_modules/ramda/src/anyPass.js\"));\nvar isEmpty = _interopDefault(__webpack_require__(/*! ramda/src/isEmpty */ \"./node_modules/ramda/src/isEmpty.js\"));\nvar join = _interopDefault(__webpack_require__(/*! ramda/src/join */ \"./node_modules/ramda/src/join.js\"));\nvar mapObjIndexed = _interopDefault(__webpack_require__(/*! ramda/src/mapObjIndexed */ \"./node_modules/ramda/src/mapObjIndexed.js\"));\nvar pick = _interopDefault(__webpack_require__(/*! ramda/src/pick */ \"./node_modules/ramda/src/pick.js\"));\nvar replace = _interopDefault(__webpack_require__(/*! ramda/src/replace */ \"./node_modules/ramda/src/replace.js\"));\nvar toUpper = _interopDefault(__webpack_require__(/*! ramda/src/toUpper */ \"./node_modules/ramda/src/toUpper.js\"));\nvar zipObj = _interopDefault(__webpack_require__(/*! ramda/src/zipObj */ \"./node_modules/ramda/src/zipObj.js\"));\nvar curry = _interopDefault(__webpack_require__(/*! ramda/src/curry */ \"./node_modules/ramda/src/curry.js\"));\n\nvar DEFAULT = 'REDUXSAUCE.DEFAULT';\n\nvar Types = Object.freeze({\n  DEFAULT: DEFAULT\n});\n\n/**\n  Creates a reducer.\n  @param {string} initialState - The initial state for this reducer.\n  @param {object} handlers - Keys are action types (strings), values are reducers (functions).\n  @return {object} A reducer object.\n */\nvar cr = function cr(initialState, handlers) {\n  // initial state is required\n  if (isNil(initialState)) {\n    throw new Error('initial state is required');\n  }\n\n  // handlers must be an object\n  if (isNil(handlers) || !is(Object, handlers)) {\n    throw new Error('handlers must be an object');\n  }\n\n  // handlers cannot have an undefined key\n  if (any(equals('undefined'))(keys(handlers))) {\n    throw new Error('handlers cannot have an undefined key');\n  }\n\n  // create the reducer function\n  return function () {\n    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initialState;\n    var action = arguments[1];\n\n    // wrong actions, just return state\n    if (isNil(action)) return state;\n    if (!has('type', action)) return state;\n\n    // look for the handler\n    var handler = handlers[action.type] || handlers[DEFAULT];\n\n    // no handler no cry\n    if (isNil(handler)) return state;\n\n    // execute the handler\n    return handler(state, action);\n  };\n};\n\nvar isNilOrEmpty = anyPass([isNil, isEmpty]);\n\nvar defaultOptions = {\n  prefix: ''\n};\n\nvar createTypes$1 = function createTypes$1(types) {\n  var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};\n\n  if (isNilOrEmpty(types)) throw new Error('valid types are required');\n\n  var _merge = merge(defaultOptions, options),\n      prefix = _merge.prefix;\n\n  return pipe(trim, split(/\\s/), map(trim), reject(isNilOrEmpty), map(function (x) {\n    return [x, prefix + x];\n  }), fromPairs)(types);\n};\n\nvar _extends = Object.assign || function (target) {\n  for (var i = 1; i < arguments.length; i++) {\n    var source = arguments[i];\n\n    for (var key in source) {\n      if (Object.prototype.hasOwnProperty.call(source, key)) {\n        target[key] = source[key];\n      }\n    }\n  }\n\n  return target;\n};\n\nvar defaultOptions$1 = {\n  prefix: ''\n\n  // matches each word in a camelCaseString (except the first)\n  // consecutive capitals are treated as one word\n};var RX_CAPS = /(?!^)([A-Z][a-z]+|[A-Z]+(?=[A-Z]|\\b))/g;\n\n// converts a camelCaseWord into a SCREAMING_SNAKE_CASE word\nvar camelToScreamingSnake = pipe(replace(RX_CAPS, '_$1'), toUpper);\n\n// build Action Types out of an object\nvar convertToTypes = function convertToTypes(config, options) {\n  var opts = merge(defaultOptions$1, options);\n  return pipe(keys, // just the keys\n  map(camelToScreamingSnake), // CONVERT_THEM\n  join(' '), // space separated\n  function (types) {\n    return createTypes$1(types, opts);\n  } // make them into Redux Types\n  )(config);\n};\n\n// an action creator with additional properties\nvar createActionCreator = function createActionCreator(name, extraPropNames, options) {\n  var _merge = merge(defaultOptions$1, options),\n      prefix = _merge.prefix;\n  // types are upcase and snakey\n\n\n  var type = '' + prefix + camelToScreamingSnake(name);\n\n  // do we need extra props for this?\n  var noKeys = isNil(extraPropNames) || isEmpty(extraPropNames);\n\n  // a type-only action creator\n  if (noKeys) return function () {\n    return { type: type };\n  };\n\n  // an action creator with type + properties\n  // \"properties\" is defined as an array of prop names\n  if (is(Array, extraPropNames)) {\n    return function () {\n      for (var _len = arguments.length, values = Array(_len), _key = 0; _key < _len; _key++) {\n        values[_key] = arguments[_key];\n      }\n\n      var extraProps = zipObj(extraPropNames, values);\n      return _extends({ type: type }, extraProps);\n    };\n  }\n\n  // an action creator with type + properties\n  // \"properties\" is defined as an object of {prop name: default value}\n  if (is(Object, extraPropNames)) {\n    var defaultProps = extraPropNames;\n    return function (valueObject) {\n      var providedProps = pick(Object.keys(defaultProps), valueObject);\n      return _extends({ type: type }, defaultProps, providedProps);\n    };\n  }\n\n  throw new Error('action props must be a null/array/object/function');\n};\n\n// build Action Creators out of an objet\nvar convertToCreators = function convertToCreators(config, options) {\n  return mapObjIndexed(function (num, key, value) {\n    if (typeof value[key] === 'function') {\n      // the user brought their own action creator\n      return value[key];\n    } else {\n      // lets make an action creator for them!\n      return createActionCreator(key, value[key], options);\n    }\n  })(config);\n};\n\nvar ca = function ca(config, options) {\n  if (isNil(config)) {\n    throw new Error('an object is required to setup types and creators');\n  }\n  if (isEmpty(config)) {\n    throw new Error('empty objects are not supported');\n  }\n\n  return {\n    Types: convertToTypes(config, options),\n    Creators: convertToCreators(config, options)\n  };\n};\n\n/**\n * Allows your reducers to be reset.\n *\n * @param {string} typeToReset - The action type to listen for.\n * @param {function} originalReducer - The reducer to wrap.\n */\nfunction resettableReducer$1(typeToReset, originalReducer) {\n  // a valid type is required\n  if (!is(String, typeToReset) || typeToReset === '') {\n    throw new Error('A valid reset type is required.');\n  }\n\n  // an original reducer is required\n  if (typeof originalReducer !== 'function') {\n    throw new Error('A reducer is required.');\n  }\n  // run it through first to get what the default state should be\n  var resetState = originalReducer(undefined, {});\n\n  // create our own reducer that wraps the original one and hijacks the reset\n  function reducer() {\n    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : resetState;\n    var action = arguments[1];\n\n    if (action && action.type === typeToReset) {\n      return resetState;\n    } else {\n      return originalReducer(state, action);\n    }\n  }\n  return reducer;\n}\n\nvar rr = curry(resettableReducer$1);\n\nvar createReducer = cr;\nvar createTypes = createTypes$1;\nvar createActions = ca;\nvar resettableReducer = rr;\n\nexports.createReducer = createReducer;\nexports.createTypes = createTypes;\nexports.createActions = createActions;\nexports.resettableReducer = resettableReducer;\nexports.Types = Types;\n\n//# sourceURL=webpack:///./node_modules/reduxsauce/dist/reduxsauce.js?");
+
+/***/ }),
+
 /***/ "./node_modules/regenerator-runtime/runtime-module.js":
 /*!************************************************************!*\
   !*** ./node_modules/regenerator-runtime/runtime-module.js ***!
@@ -1127,6 +2015,18 @@ eval("\n\nif (false) {} else {\n  module.exports = __webpack_require__(/*! ./cjs
 
 "use strict";
 eval("\n\nif (false) {} else {\n  module.exports = __webpack_require__(/*! ./cjs/scheduler-tracing.development.js */ \"./node_modules/scheduler/cjs/scheduler-tracing.development.js\");\n}\n\n//# sourceURL=webpack:///./node_modules/scheduler/tracing.js?");
+
+/***/ }),
+
+/***/ "./node_modules/seamless-immutable/seamless-immutable.development.js":
+/*!***************************************************************************!*\
+  !*** ./node_modules/seamless-immutable/seamless-immutable.development.js ***!
+  \***************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("var __WEBPACK_AMD_DEFINE_RESULT__;\n\nvar _typeof = typeof Symbol === \"function\" && typeof Symbol.iterator === \"symbol\" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === \"function\" && obj.constructor === Symbol && obj !== Symbol.prototype ? \"symbol\" : typeof obj; };\n\n(function () {\n  \"use strict\";\n\n  function immutableInit(config) {\n\n    // https://github.com/facebook/react/blob/v15.0.1/src/isomorphic/classic/element/ReactElement.js#L21\n    var REACT_ELEMENT_TYPE = typeof Symbol === 'function' && Symbol.for && Symbol.for('react.element');\n    var REACT_ELEMENT_TYPE_FALLBACK = 0xeac7;\n\n    var globalConfig = {\n      use_static: false\n    };\n    if (isObject(config)) {\n      if (config.use_static !== undefined) {\n        globalConfig.use_static = Boolean(config.use_static);\n      }\n    }\n\n    function isObject(data) {\n      return (typeof data === 'undefined' ? 'undefined' : _typeof(data)) === 'object' && !Array.isArray(data) && data !== null;\n    }\n\n    function instantiateEmptyObject(obj) {\n      var prototype = Object.getPrototypeOf(obj);\n      if (!prototype) {\n        return {};\n      } else {\n        return Object.create(prototype);\n      }\n    }\n\n    function addPropertyTo(target, methodName, value) {\n      Object.defineProperty(target, methodName, {\n        enumerable: false,\n        configurable: false,\n        writable: false,\n        value: value\n      });\n    }\n\n    function banProperty(target, methodName) {\n      addPropertyTo(target, methodName, function () {\n        throw new ImmutableError(\"The \" + methodName + \" method cannot be invoked on an Immutable data structure.\");\n      });\n    }\n\n    var immutabilityTag = \"__immutable_invariants_hold\";\n\n    function addImmutabilityTag(target) {\n      addPropertyTo(target, immutabilityTag, true);\n    }\n\n    function isImmutable(target) {\n      if ((typeof target === 'undefined' ? 'undefined' : _typeof(target)) === \"object\") {\n        return target === null || Boolean(Object.getOwnPropertyDescriptor(target, immutabilityTag));\n      } else {\n        // In JavaScript, only objects are even potentially mutable.\n        // strings, numbers, null, and undefined are all naturally immutable.\n        return true;\n      }\n    }\n\n    function isEqual(a, b) {\n      // Avoid false positives due to (NaN !== NaN) evaluating to true\n      return a === b || a !== a && b !== b;\n    }\n\n    function isMergableObject(target) {\n      return target !== null && (typeof target === 'undefined' ? 'undefined' : _typeof(target)) === \"object\" && !Array.isArray(target) && !(target instanceof Date);\n    }\n\n    var mutatingObjectMethods = [\"setPrototypeOf\"];\n\n    var nonMutatingObjectMethods = [\"keys\"];\n\n    var mutatingArrayMethods = mutatingObjectMethods.concat([\"push\", \"pop\", \"sort\", \"splice\", \"shift\", \"unshift\", \"reverse\"]);\n\n    var nonMutatingArrayMethods = nonMutatingObjectMethods.concat([\"map\", \"filter\", \"slice\", \"concat\", \"reduce\", \"reduceRight\"]);\n\n    var mutatingDateMethods = mutatingObjectMethods.concat([\"setDate\", \"setFullYear\", \"setHours\", \"setMilliseconds\", \"setMinutes\", \"setMonth\", \"setSeconds\", \"setTime\", \"setUTCDate\", \"setUTCFullYear\", \"setUTCHours\", \"setUTCMilliseconds\", \"setUTCMinutes\", \"setUTCMonth\", \"setUTCSeconds\", \"setYear\"]);\n\n    function ImmutableError(message) {\n      this.name = 'MyError';\n      this.message = message;\n      this.stack = new Error().stack;\n    }\n    ImmutableError.prototype = new Error();\n    ImmutableError.prototype.constructor = Error;\n\n    function makeImmutable(obj, bannedMethods) {\n      // Tag it so we can quickly tell it's immutable later.\n      addImmutabilityTag(obj);\n\n      if (true) {\n        // Make all mutating methods throw exceptions.\n        for (var index in bannedMethods) {\n          if (bannedMethods.hasOwnProperty(index)) {\n            banProperty(obj, bannedMethods[index]);\n          }\n        }\n\n        // Freeze it and return it.\n        Object.freeze(obj);\n      }\n\n      return obj;\n    }\n\n    function makeMethodReturnImmutable(obj, methodName) {\n      var currentMethod = obj[methodName];\n\n      addPropertyTo(obj, methodName, function () {\n        return Immutable(currentMethod.apply(obj, arguments));\n      });\n    }\n\n    function arraySet(idx, value, config) {\n      var deep = config && config.deep;\n\n      if (idx in this) {\n        if (deep && this[idx] !== value && isMergableObject(value) && isMergableObject(this[idx])) {\n          value = Immutable.merge(this[idx], value, { deep: true, mode: 'replace' });\n        }\n        if (isEqual(this[idx], value)) {\n          return this;\n        }\n      }\n\n      var mutable = asMutableArray.call(this);\n      mutable[idx] = Immutable(value);\n      return makeImmutableArray(mutable);\n    }\n\n    var immutableEmptyArray = Immutable([]);\n\n    function arraySetIn(pth, value, config) {\n      var head = pth[0];\n\n      if (pth.length === 1) {\n        return arraySet.call(this, head, value, config);\n      } else {\n        var tail = pth.slice(1);\n        var thisHead = this[head];\n        var newValue;\n\n        if ((typeof thisHead === 'undefined' ? 'undefined' : _typeof(thisHead)) === \"object\" && thisHead !== null) {\n          // Might (validly) be object or array\n          newValue = Immutable.setIn(thisHead, tail, value);\n        } else {\n          var nextHead = tail[0];\n          // If the next path part is a number, then we are setting into an array, else an object.\n          if (nextHead !== '' && isFinite(nextHead)) {\n            newValue = arraySetIn.call(immutableEmptyArray, tail, value);\n          } else {\n            newValue = objectSetIn.call(immutableEmptyObject, tail, value);\n          }\n        }\n\n        if (head in this && thisHead === newValue) {\n          return this;\n        }\n\n        var mutable = asMutableArray.call(this);\n        mutable[head] = newValue;\n        return makeImmutableArray(mutable);\n      }\n    }\n\n    function makeImmutableArray(array) {\n      // Don't change their implementations, but wrap these functions to make sure\n      // they always return an immutable value.\n      for (var index in nonMutatingArrayMethods) {\n        if (nonMutatingArrayMethods.hasOwnProperty(index)) {\n          var methodName = nonMutatingArrayMethods[index];\n          makeMethodReturnImmutable(array, methodName);\n        }\n      }\n\n      if (!globalConfig.use_static) {\n        addPropertyTo(array, \"flatMap\", flatMap);\n        addPropertyTo(array, \"asObject\", asObject);\n        addPropertyTo(array, \"asMutable\", asMutableArray);\n        addPropertyTo(array, \"set\", arraySet);\n        addPropertyTo(array, \"setIn\", arraySetIn);\n        addPropertyTo(array, \"update\", update);\n        addPropertyTo(array, \"updateIn\", updateIn);\n        addPropertyTo(array, \"getIn\", getIn);\n      }\n\n      for (var i = 0, length = array.length; i < length; i++) {\n        array[i] = Immutable(array[i]);\n      }\n\n      return makeImmutable(array, mutatingArrayMethods);\n    }\n\n    function makeImmutableDate(date) {\n      if (!globalConfig.use_static) {\n        addPropertyTo(date, \"asMutable\", asMutableDate);\n      }\n\n      return makeImmutable(date, mutatingDateMethods);\n    }\n\n    function asMutableDate() {\n      return new Date(this.getTime());\n    }\n\n    /**\n     * Effectively performs a map() over the elements in the array, using the\n     * provided iterator, except that whenever the iterator returns an array, that\n     * array's elements are added to the final result instead of the array itself.\n     *\n     * @param {function} iterator - The iterator function that will be invoked on each element in the array. It will receive three arguments: the current value, the current index, and the current object.\n     */\n    function flatMap(iterator) {\n      // Calling .flatMap() with no arguments is a no-op. Don't bother cloning.\n      if (arguments.length === 0) {\n        return this;\n      }\n\n      var result = [],\n          length = this.length,\n          index;\n\n      for (index = 0; index < length; index++) {\n        var iteratorResult = iterator(this[index], index, this);\n\n        if (Array.isArray(iteratorResult)) {\n          // Concatenate Array results into the return value we're building up.\n          result.push.apply(result, iteratorResult);\n        } else {\n          // Handle non-Array results the same way map() does.\n          result.push(iteratorResult);\n        }\n      }\n\n      return makeImmutableArray(result);\n    }\n\n    /**\n     * Returns an Immutable copy of the object without the given keys included.\n     *\n     * @param {array} keysToRemove - A list of strings representing the keys to exclude in the return value. Instead of providing a single array, this method can also be called by passing multiple strings as separate arguments.\n     */\n    function without(remove) {\n      // Calling .without() with no arguments is a no-op. Don't bother cloning.\n      if (typeof remove === \"undefined\" && arguments.length === 0) {\n        return this;\n      }\n\n      if (typeof remove !== \"function\") {\n        // If we weren't given an array, use the arguments list.\n        var keysToRemoveArray = Array.isArray(remove) ? remove.slice() : Array.prototype.slice.call(arguments);\n\n        // Convert numeric keys to strings since that's how they'll\n        // come from the enumeration of the object.\n        keysToRemoveArray.forEach(function (el, idx, arr) {\n          if (typeof el === \"number\") {\n            arr[idx] = el.toString();\n          }\n        });\n\n        remove = function remove(val, key) {\n          return keysToRemoveArray.indexOf(key) !== -1;\n        };\n      }\n\n      var result = instantiateEmptyObject(this);\n\n      for (var key in this) {\n        if (this.hasOwnProperty(key) && remove(this[key], key) === false) {\n          result[key] = this[key];\n        }\n      }\n\n      return makeImmutableObject(result);\n    }\n\n    function asMutableArray(opts) {\n      var result = [],\n          i,\n          length;\n\n      if (opts && opts.deep) {\n        for (i = 0, length = this.length; i < length; i++) {\n          result.push(asDeepMutable(this[i]));\n        }\n      } else {\n        for (i = 0, length = this.length; i < length; i++) {\n          result.push(this[i]);\n        }\n      }\n\n      return result;\n    }\n\n    /**\n     * Effectively performs a [map](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map) over the elements in the array, expecting that the iterator function\n     * will return an array of two elements - the first representing a key, the other\n     * a value. Then returns an Immutable Object constructed of those keys and values.\n     *\n     * @param {function} iterator - A function which should return an array of two elements - the first representing the desired key, the other the desired value.\n     */\n    function asObject(iterator) {\n      // If no iterator was provided, assume the identity function\n      // (suggesting this array is already a list of key/value pairs.)\n      if (typeof iterator !== \"function\") {\n        iterator = function iterator(value) {\n          return value;\n        };\n      }\n\n      var result = {},\n          length = this.length,\n          index;\n\n      for (index = 0; index < length; index++) {\n        var pair = iterator(this[index], index, this),\n            key = pair[0],\n            value = pair[1];\n\n        result[key] = value;\n      }\n\n      return makeImmutableObject(result);\n    }\n\n    function asDeepMutable(obj) {\n      if (!obj || (typeof obj === 'undefined' ? 'undefined' : _typeof(obj)) !== 'object' || !Object.getOwnPropertyDescriptor(obj, immutabilityTag) || obj instanceof Date) {\n        return obj;\n      }\n      return Immutable.asMutable(obj, { deep: true });\n    }\n\n    function quickCopy(src, dest) {\n      for (var key in src) {\n        if (Object.getOwnPropertyDescriptor(src, key)) {\n          dest[key] = src[key];\n        }\n      }\n\n      return dest;\n    }\n\n    /**\n     * Returns an Immutable Object containing the properties and values of both\n     * this object and the provided object, prioritizing the provided object's\n     * values whenever the same key is present in both objects.\n     *\n     * @param {object} other - The other object to merge. Multiple objects can be passed as an array. In such a case, the later an object appears in that list, the higher its priority.\n     * @param {object} config - Optional config object that contains settings. Supported settings are: {deep: true} for deep merge and {merger: mergerFunc} where mergerFunc is a function\n     *                          that takes a property from both objects. If anything is returned it overrides the normal merge behaviour.\n     */\n    function merge(other, config) {\n      // Calling .merge() with no arguments is a no-op. Don't bother cloning.\n      if (arguments.length === 0) {\n        return this;\n      }\n\n      if (other === null || (typeof other === 'undefined' ? 'undefined' : _typeof(other)) !== \"object\") {\n        throw new TypeError(\"Immutable#merge can only be invoked with objects or arrays, not \" + JSON.stringify(other));\n      }\n\n      var receivedArray = Array.isArray(other),\n          deep = config && config.deep,\n          mode = config && config.mode || 'merge',\n          merger = config && config.merger,\n          result;\n\n      // Use the given key to extract a value from the given object, then place\n      // that value in the result object under the same key. If that resulted\n      // in a change from this object's value at that key, set anyChanges = true.\n      function addToResult(currentObj, otherObj, key) {\n        var immutableValue = Immutable(otherObj[key]);\n        var mergerResult = merger && merger(currentObj[key], immutableValue, config);\n        var currentValue = currentObj[key];\n\n        if (result !== undefined || mergerResult !== undefined || !currentObj.hasOwnProperty(key) || !isEqual(immutableValue, currentValue)) {\n\n          var newValue;\n\n          if (mergerResult !== undefined) {\n            newValue = mergerResult;\n          } else if (deep && isMergableObject(currentValue) && isMergableObject(immutableValue)) {\n            newValue = Immutable.merge(currentValue, immutableValue, config);\n          } else {\n            newValue = immutableValue;\n          }\n\n          if (!isEqual(currentValue, newValue) || !currentObj.hasOwnProperty(key)) {\n            if (result === undefined) {\n              // Make a shallow clone of the current object.\n              result = quickCopy(currentObj, instantiateEmptyObject(currentObj));\n            }\n\n            result[key] = newValue;\n          }\n        }\n      }\n\n      function clearDroppedKeys(currentObj, otherObj) {\n        for (var key in currentObj) {\n          if (!otherObj.hasOwnProperty(key)) {\n            if (result === undefined) {\n              // Make a shallow clone of the current object.\n              result = quickCopy(currentObj, instantiateEmptyObject(currentObj));\n            }\n            delete result[key];\n          }\n        }\n      }\n\n      var key;\n\n      // Achieve prioritization by overriding previous values that get in the way.\n      if (!receivedArray) {\n        // The most common use case: just merge one object into the existing one.\n        for (key in other) {\n          if (Object.getOwnPropertyDescriptor(other, key)) {\n            addToResult(this, other, key);\n          }\n        }\n        if (mode === 'replace') {\n          clearDroppedKeys(this, other);\n        }\n      } else {\n        // We also accept an Array\n        for (var index = 0, length = other.length; index < length; index++) {\n          var otherFromArray = other[index];\n\n          for (key in otherFromArray) {\n            if (otherFromArray.hasOwnProperty(key)) {\n              addToResult(result !== undefined ? result : this, otherFromArray, key);\n            }\n          }\n        }\n      }\n\n      if (result === undefined) {\n        return this;\n      } else {\n        return makeImmutableObject(result);\n      }\n    }\n\n    function objectReplace(value, config) {\n      var deep = config && config.deep;\n\n      // Calling .replace() with no arguments is a no-op. Don't bother cloning.\n      if (arguments.length === 0) {\n        return this;\n      }\n\n      if (value === null || (typeof value === 'undefined' ? 'undefined' : _typeof(value)) !== \"object\") {\n        throw new TypeError(\"Immutable#replace can only be invoked with objects or arrays, not \" + JSON.stringify(value));\n      }\n\n      return Immutable.merge(this, value, { deep: deep, mode: 'replace' });\n    }\n\n    var immutableEmptyObject = Immutable({});\n\n    function objectSetIn(path, value, config) {\n      if (!Array.isArray(path) || path.length === 0) {\n        throw new TypeError(\"The first argument to Immutable#setIn must be an array containing at least one \\\"key\\\" string.\");\n      }\n\n      var head = path[0];\n      if (path.length === 1) {\n        return objectSet.call(this, head, value, config);\n      }\n\n      var tail = path.slice(1);\n      var newValue;\n      var thisHead = this[head];\n\n      if (this.hasOwnProperty(head) && (typeof thisHead === 'undefined' ? 'undefined' : _typeof(thisHead)) === \"object\" && thisHead !== null) {\n        // Might (validly) be object or array\n        newValue = Immutable.setIn(thisHead, tail, value);\n      } else {\n        newValue = objectSetIn.call(immutableEmptyObject, tail, value);\n      }\n\n      if (this.hasOwnProperty(head) && thisHead === newValue) {\n        return this;\n      }\n\n      var mutable = quickCopy(this, instantiateEmptyObject(this));\n      mutable[head] = newValue;\n      return makeImmutableObject(mutable);\n    }\n\n    function objectSet(property, value, config) {\n      var deep = config && config.deep;\n\n      if (this.hasOwnProperty(property)) {\n        if (deep && this[property] !== value && isMergableObject(value) && isMergableObject(this[property])) {\n          value = Immutable.merge(this[property], value, { deep: true, mode: 'replace' });\n        }\n        if (isEqual(this[property], value)) {\n          return this;\n        }\n      }\n\n      var mutable = quickCopy(this, instantiateEmptyObject(this));\n      mutable[property] = Immutable(value);\n      return makeImmutableObject(mutable);\n    }\n\n    function update(property, updater) {\n      var restArgs = Array.prototype.slice.call(arguments, 2);\n      var initialVal = this[property];\n      return Immutable.set(this, property, updater.apply(initialVal, [initialVal].concat(restArgs)));\n    }\n\n    function getInPath(obj, path) {\n      /*jshint eqnull:true */\n      for (var i = 0, l = path.length; obj != null && i < l; i++) {\n        obj = obj[path[i]];\n      }\n\n      return i && i == l ? obj : undefined;\n    }\n\n    function updateIn(path, updater) {\n      var restArgs = Array.prototype.slice.call(arguments, 2);\n      var initialVal = getInPath(this, path);\n\n      return Immutable.setIn(this, path, updater.apply(initialVal, [initialVal].concat(restArgs)));\n    }\n\n    function getIn(path, defaultValue) {\n      var value = getInPath(this, path);\n      return value === undefined ? defaultValue : value;\n    }\n\n    function asMutableObject(opts) {\n      var result = instantiateEmptyObject(this),\n          key;\n\n      if (opts && opts.deep) {\n        for (key in this) {\n          if (this.hasOwnProperty(key)) {\n            result[key] = asDeepMutable(this[key]);\n          }\n        }\n      } else {\n        for (key in this) {\n          if (this.hasOwnProperty(key)) {\n            result[key] = this[key];\n          }\n        }\n      }\n\n      return result;\n    }\n\n    // Creates plain object to be used for cloning\n    function instantiatePlainObject() {\n      return {};\n    }\n\n    // Finalizes an object with immutable methods, freezes it, and returns it.\n    function makeImmutableObject(obj) {\n      if (!globalConfig.use_static) {\n        addPropertyTo(obj, \"merge\", merge);\n        addPropertyTo(obj, \"replace\", objectReplace);\n        addPropertyTo(obj, \"without\", without);\n        addPropertyTo(obj, \"asMutable\", asMutableObject);\n        addPropertyTo(obj, \"set\", objectSet);\n        addPropertyTo(obj, \"setIn\", objectSetIn);\n        addPropertyTo(obj, \"update\", update);\n        addPropertyTo(obj, \"updateIn\", updateIn);\n        addPropertyTo(obj, \"getIn\", getIn);\n      }\n\n      return makeImmutable(obj, mutatingObjectMethods);\n    }\n\n    // Returns true if object is a valid react element\n    // https://github.com/facebook/react/blob/v15.0.1/src/isomorphic/classic/element/ReactElement.js#L326\n    function isReactElement(obj) {\n      return (typeof obj === 'undefined' ? 'undefined' : _typeof(obj)) === 'object' && obj !== null && (obj.$$typeof === REACT_ELEMENT_TYPE_FALLBACK || obj.$$typeof === REACT_ELEMENT_TYPE);\n    }\n\n    function isFileObject(obj) {\n      return typeof File !== 'undefined' && obj instanceof File;\n    }\n\n    function isBlobObject(obj) {\n      return typeof Blob !== 'undefined' && obj instanceof Blob;\n    }\n\n    function isPromise(obj) {\n      return (typeof obj === 'undefined' ? 'undefined' : _typeof(obj)) === 'object' && typeof obj.then === 'function';\n    }\n\n    function isError(obj) {\n      return obj instanceof Error;\n    }\n\n    function Immutable(obj, options, stackRemaining) {\n      if (isImmutable(obj) || isReactElement(obj) || isFileObject(obj) || isBlobObject(obj) || isError(obj)) {\n        return obj;\n      } else if (isPromise(obj)) {\n        return obj.then(Immutable);\n      } else if (Array.isArray(obj)) {\n        return makeImmutableArray(obj.slice());\n      } else if (obj instanceof Date) {\n        return makeImmutableDate(new Date(obj.getTime()));\n      } else {\n        // Don't freeze the object we were given; make a clone and use that.\n        var prototype = options && options.prototype;\n        var instantiateEmptyObject = !prototype || prototype === Object.prototype ? instantiatePlainObject : function () {\n          return Object.create(prototype);\n        };\n        var clone = instantiateEmptyObject();\n\n        if (true) {\n          /*jshint eqnull:true */\n          if (stackRemaining == null) {\n            stackRemaining = 64;\n          }\n          if (stackRemaining <= 0) {\n            throw new ImmutableError(\"Attempt to construct Immutable from a deeply nested object was detected.\" + \" Have you tried to wrap an object with circular references (e.g. React element)?\" + \" See https://github.com/rtfeldman/seamless-immutable/wiki/Deeply-nested-object-was-detected for details.\");\n          }\n          stackRemaining -= 1;\n        }\n\n        for (var key in obj) {\n          if (Object.getOwnPropertyDescriptor(obj, key)) {\n            clone[key] = Immutable(obj[key], undefined, stackRemaining);\n          }\n        }\n\n        return makeImmutableObject(clone);\n      }\n    }\n\n    // Wrapper to allow the use of object methods as static methods of Immutable.\n    function toStatic(fn) {\n      function staticWrapper() {\n        var args = [].slice.call(arguments);\n        var self = args.shift();\n        return fn.apply(self, args);\n      }\n\n      return staticWrapper;\n    }\n\n    // Wrapper to allow the use of object methods as static methods of Immutable.\n    // with the additional condition of choosing which function to call depending\n    // if argument is an array or an object.\n    function toStaticObjectOrArray(fnObject, fnArray) {\n      function staticWrapper() {\n        var args = [].slice.call(arguments);\n        var self = args.shift();\n        if (Array.isArray(self)) {\n          return fnArray.apply(self, args);\n        } else {\n          return fnObject.apply(self, args);\n        }\n      }\n\n      return staticWrapper;\n    }\n\n    // Wrapper to allow the use of object methods as static methods of Immutable.\n    // with the additional condition of choosing which function to call depending\n    // if argument is an array or an object or a date.\n    function toStaticObjectOrDateOrArray(fnObject, fnArray, fnDate) {\n      function staticWrapper() {\n        var args = [].slice.call(arguments);\n        var self = args.shift();\n        if (Array.isArray(self)) {\n          return fnArray.apply(self, args);\n        } else if (self instanceof Date) {\n          return fnDate.apply(self, args);\n        } else {\n          return fnObject.apply(self, args);\n        }\n      }\n\n      return staticWrapper;\n    }\n\n    // Export the library\n    Immutable.from = Immutable;\n    Immutable.isImmutable = isImmutable;\n    Immutable.ImmutableError = ImmutableError;\n    Immutable.merge = toStatic(merge);\n    Immutable.replace = toStatic(objectReplace);\n    Immutable.without = toStatic(without);\n    Immutable.asMutable = toStaticObjectOrDateOrArray(asMutableObject, asMutableArray, asMutableDate);\n    Immutable.set = toStaticObjectOrArray(objectSet, arraySet);\n    Immutable.setIn = toStaticObjectOrArray(objectSetIn, arraySetIn);\n    Immutable.update = toStatic(update);\n    Immutable.updateIn = toStatic(updateIn);\n    Immutable.getIn = toStatic(getIn);\n    Immutable.flatMap = toStatic(flatMap);\n    Immutable.asObject = toStatic(asObject);\n    if (!globalConfig.use_static) {\n      Immutable.static = immutableInit({\n        use_static: true\n      });\n    }\n\n    Object.freeze(Immutable);\n\n    return Immutable;\n  }\n\n  var Immutable = immutableInit();\n  /* istanbul ignore if */\n  if (true) {\n    !(__WEBPACK_AMD_DEFINE_RESULT__ = (function () {\n      return Immutable;\n    }).call(exports, __webpack_require__, exports, module),\n\t\t\t\t__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));\n  } else {}\n})();\n\n//# sourceURL=webpack:///./node_modules/seamless-immutable/seamless-immutable.development.js?");
 
 /***/ }),
 
@@ -1246,7 +2146,7 @@ eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\n
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\n\nvar _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if (\"value\" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();\n\nvar _react = __webpack_require__(/*! react */ \"./node_modules/react/index.js\");\n\nvar _react2 = _interopRequireDefault(_react);\n\nvar _Header = __webpack_require__(/*! ../../conponents/Header */ \"./src/conponents/Header.js\");\n\nvar _Header2 = _interopRequireDefault(_Header);\n\nvar _reactRedux = __webpack_require__(/*! react-redux */ \"./node_modules/react-redux/es/index.js\");\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }\n\nfunction _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError(\"Cannot call a class as a function\"); } }\n\nfunction _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError(\"this hasn't been initialised - super() hasn't been called\"); } return call && (typeof call === \"object\" || typeof call === \"function\") ? call : self; }\n\nfunction _inherits(subClass, superClass) { if (typeof superClass !== \"function\" && superClass !== null) { throw new TypeError(\"Super expression must either be null or a function, not \" + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }\n\nvar Home = function (_Component) {\n  _inherits(Home, _Component);\n\n  function Home(props) {\n    _classCallCheck(this, Home);\n\n    var _this = _possibleConstructorReturn(this, (Home.__proto__ || Object.getPrototypeOf(Home)).call(this, props));\n\n    _this.onClick = function () {\n      _this.props.addAction({ type: 'ADD_NUMBER_REQ' });\n    };\n\n    _this.state = {\n      loading: ''\n    };\n    return _this;\n  }\n\n  _createClass(Home, [{\n    key: 'componentDidUpdate',\n    value: function componentDidUpdate(prevProps) {\n      var nextProps = this.props;\n      if (!prevProps.add.fetching && nextProps.add.fetching) {\n        this.setState({\n          loading: 'loading ...'\n        });\n      }\n      if (prevProps.add.fetching && !nextProps.add.fetching) {\n        if (!prevProps.add.error && !nextProps.add.error) {\n          this.setState({\n            loading: 'loading success'\n          });\n        }\n        if (!prevProps.add.error && nextProps.add.error) {\n          this.setState({\n            loading: 'loading error'\n          });\n        }\n      }\n    }\n  }, {\n    key: 'render',\n    value: function render() {\n      var _this2 = this;\n\n      var pathname = this.props.location.pathname;\n      var number = this.props.add.number;\n      var loading = this.state.loading;\n\n      return _react2.default.createElement(\n        'div',\n        null,\n        _react2.default.createElement(_Header2.default, { pathname: pathname }),\n        _react2.default.createElement(\n          'div',\n          null,\n          _react2.default.createElement(\n            'h3',\n            null,\n            number\n          ),\n          _react2.default.createElement(\n            'div',\n            null,\n            this.state.loading\n          ),\n          _react2.default.createElement(\n            'button',\n            { className: 'hellobtn', onClick: function onClick() {\n                _this2.onClick();\n              } },\n            '\\u70B9\\u6211'\n          )\n        )\n      );\n    }\n  }]);\n\n  return Home;\n}(_react.Component);\n\nvar mapStateToProps = function mapStateToProps(state) {\n  return {\n    add: state.add,\n    number: state.add.number\n  };\n};\nvar mapDispatchToProps = function mapDispatchToProps(dispatch) {\n  return {\n    addAction: function addAction() {\n      return dispatch.apply(undefined, arguments);\n    }\n  };\n};\nexports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(Home);\n\n//# sourceURL=webpack:///./src/containers/Home/index.js?");
+eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\n\nvar _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if (\"value\" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();\n\nvar _react = __webpack_require__(/*! react */ \"./node_modules/react/index.js\");\n\nvar _react2 = _interopRequireDefault(_react);\n\nvar _Header = __webpack_require__(/*! ../../conponents/Header */ \"./src/conponents/Header.js\");\n\nvar _Header2 = _interopRequireDefault(_Header);\n\nvar _reactRedux = __webpack_require__(/*! react-redux */ \"./node_modules/react-redux/es/index.js\");\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }\n\nfunction _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError(\"Cannot call a class as a function\"); } }\n\nfunction _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError(\"this hasn't been initialised - super() hasn't been called\"); } return call && (typeof call === \"object\" || typeof call === \"function\") ? call : self; }\n\nfunction _inherits(subClass, superClass) { if (typeof superClass !== \"function\" && superClass !== null) { throw new TypeError(\"Super expression must either be null or a function, not \" + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }\n\nvar Home = function (_Component) {\n  _inherits(Home, _Component);\n\n  function Home(props) {\n    _classCallCheck(this, Home);\n\n    var _this = _possibleConstructorReturn(this, (Home.__proto__ || Object.getPrototypeOf(Home)).call(this, props));\n\n    _this.onClick = function () {\n      _this.props.addAction({ type: 'ADD_NUMBER_REQ' });\n    };\n\n    _this.state = {\n      loading: ''\n    };\n    return _this;\n  }\n\n  _createClass(Home, [{\n    key: 'componentDidUpdate',\n    value: function componentDidUpdate(prevProps) {\n      var nextProps = this.props;\n\n      if (!prevProps.add.fetching && nextProps.add.fetching) {\n        this.setState({\n          loading: 'loading ...'\n        });\n      }\n\n      if (prevProps.add.fetching && !nextProps.add.fetching) {\n\n        if (!prevProps.add.error && !nextProps.add.error) {\n          this.setState({\n            loading: 'loading success'\n          });\n        }\n\n        if (!prevProps.add.error && nextProps.add.error) {\n          this.setState({\n            loading: 'loading error'\n          });\n        }\n      }\n    }\n  }, {\n    key: 'render',\n    value: function render() {\n      var _this2 = this;\n\n      var pathname = this.props.location.pathname;\n      var number = this.props.add.number;\n      var loading = this.state.loading;\n\n      return _react2.default.createElement(\n        'div',\n        null,\n        _react2.default.createElement(_Header2.default, { pathname: pathname }),\n        _react2.default.createElement(\n          'div',\n          null,\n          _react2.default.createElement(\n            'h3',\n            null,\n            number\n          ),\n          _react2.default.createElement(\n            'div',\n            null,\n            this.state.loading\n          ),\n          _react2.default.createElement(\n            'button',\n            { className: 'hellobtn', onClick: function onClick() {\n                _this2.onClick();\n              } },\n            '\\u70B9\\u6211'\n          )\n        )\n      );\n    }\n  }]);\n\n  return Home;\n}(_react.Component);\n\nvar mapStateToProps = function mapStateToProps(state) {\n  return {\n    add: state.add,\n    number: state.add.number\n  };\n};\nvar mapDispatchToProps = function mapDispatchToProps(dispatch) {\n  return {\n    addAction: function addAction() {\n      return dispatch.apply(undefined, arguments);\n    }\n  };\n};\nexports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(Home);\n\n//# sourceURL=webpack:///./src/containers/Home/index.js?");
 
 /***/ }),
 
@@ -1262,15 +2162,15 @@ eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\n
 
 /***/ }),
 
-/***/ "./src/redux/add.js":
-/*!**************************!*\
-  !*** ./src/redux/add.js ***!
-  \**************************/
+/***/ "./src/redux/addRedux.js":
+/*!*******************************!*\
+  !*** ./src/redux/addRedux.js ***!
+  \*******************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n    value: true\n});\nexports.default = changeNum;\n\nvar initialState = {\n    number: 0,\n    fetching: false,\n    error: null\n};\nfunction changeNum() {\n    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initialState;\n    var action = arguments[1];\n\n    switch (action.type) {\n        case 'ADD_NUMBER_REQ':\n\n            return Object.assign({}, state, {\n                fetching: true, error: null\n            });\n        case 'ADD_NUMBER_SUC':\n            {\n                var number = action.number;\n\n                return Object.assign({}, state, {\n                    number: state.number + number,\n                    fetching: false\n                });\n            }\n        case 'ADD_NUMBER_FAILURE':\n            {\n                return Object.assign({}, state, {\n                    fetching: false,\n                    error: true\n                });\n            }\n        default:\n            return state;\n    }\n}\n\n//# sourceURL=webpack:///./src/redux/add.js?");
+eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n    value: true\n});\nexports.failure = exports.success = exports.request = exports.AddNumberTypes = undefined;\n\nvar _createReducer;\n\nvar _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };\n\nvar _seamlessImmutable = __webpack_require__(/*! seamless-immutable */ \"./node_modules/seamless-immutable/seamless-immutable.development.js\");\n\nvar _seamlessImmutable2 = _interopRequireDefault(_seamlessImmutable);\n\nvar _reduxsauce = __webpack_require__(/*! reduxsauce */ \"./node_modules/reduxsauce/dist/reduxsauce.js\");\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }\n\nfunction _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }\n\nvar _createActions = (0, _reduxsauce.createActions)({\n    addNumberReq: ['params'],\n    addNumberSuc: ['params'],\n    addNumberFailure: ['params']\n}),\n    Types = _createActions.Types,\n    Creators = _createActions.Creators;\n\nvar AddNumberTypes = exports.AddNumberTypes = Types;\nvar INITIAL_STATE = (0, _seamlessImmutable2.default)({\n    number: 0,\n    fetching: false,\n    error: null\n});\n\nvar request = exports.request = function request(state, action) {\n    return state.merge({ fetching: true, error: null });\n};\nvar success = exports.success = function success(state, action) {\n    var number = action.number;\n\n    var _state = _extends({}, state),\n        oldNumber = _state.number;\n\n    number = number + oldNumber;\n    return state.merge({ number: number, fetching: false, error: null });\n};\nvar failure = exports.failure = function failure(state, action) {\n    return state.merge({ fetching: false, error: true });\n};\n\nvar reducer = (0, _reduxsauce.createReducer)(INITIAL_STATE, (_createReducer = {}, _defineProperty(_createReducer, Types.ADD_NUMBER_REQ, request), _defineProperty(_createReducer, Types.ADD_NUMBER_SUC, success), _defineProperty(_createReducer, Types.ADD_NUMBER_FAILURE, failure), _createReducer));\nexports.default = reducer;\n\n//# sourceURL=webpack:///./src/redux/addRedux.js?");
 
 /***/ }),
 
@@ -1282,7 +2182,7 @@ eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n    value: true\n});
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n    value: true\n});\nexports.default = root;\n\nvar _redux = __webpack_require__(/*! redux */ \"./node_modules/redux/es/redux.js\");\n\nvar _add = __webpack_require__(/*! ./add */ \"./src/redux/add.js\");\n\nvar _add2 = _interopRequireDefault(_add);\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }\n\nvar shoppingCart = (0, _redux.combineReducers)({\n    add: _add2.default\n});\n\nfunction root(state, action) {\n    return shoppingCart(state, action);\n}\n\n//# sourceURL=webpack:///./src/redux/index.js?");
+eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n    value: true\n});\nexports.default = root;\n\nvar _redux = __webpack_require__(/*! redux */ \"./node_modules/redux/es/redux.js\");\n\nvar _addRedux = __webpack_require__(/*! ./addRedux */ \"./src/redux/addRedux.js\");\n\nvar _addRedux2 = _interopRequireDefault(_addRedux);\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }\n\nvar shoppingCart = (0, _redux.combineReducers)({\n    add: _addRedux2.default\n});\n\nfunction root(state, action) {\n    return shoppingCart(state, action);\n}\n\n//# sourceURL=webpack:///./src/redux/index.js?");
 
 /***/ }),
 
@@ -1294,7 +2194,7 @@ eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n    value: true\n});
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n    value: true\n});\n\nvar _regenerator = __webpack_require__(/*! babel-runtime/regenerator */ \"./node_modules/babel-runtime/regenerator/index.js\");\n\nvar _regenerator2 = _interopRequireDefault(_regenerator);\n\nexports.incrementAsync = incrementAsync;\nexports.default = rootSaga;\n\nvar _effects = __webpack_require__(/*! redux-saga/effects */ \"./node_modules/redux-saga/dist/redux-saga-effects-npm-proxy.esm.js\");\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }\n\nvar _marked = /*#__PURE__*/_regenerator2.default.mark(incrementAsync),\n    _marked2 = /*#__PURE__*/_regenerator2.default.mark(rootSaga);\n\nfunction incrementAsync() {\n    var number;\n    return _regenerator2.default.wrap(function incrementAsync$(_context) {\n        while (1) {\n            switch (_context.prev = _context.next) {\n                case 0:\n                    _context.next = 2;\n                    return (0, _effects.call)(function () {\n                        return new Promise(function (resolve) {\n                            setTimeout(function () {\n                                resolve(Math.floor(Math.random() * 10));\n                            }, 1000);\n                        });\n                    });\n\n                case 2:\n                    number = _context.sent;\n\n                    if (!number) {\n                        _context.next = 9;\n                        break;\n                    }\n\n                    _context.next = 6;\n                    return (0, _effects.put)({ type: 'ADD_NUMBER_SUC', number: number });\n\n                case 6:\n                    return _context.abrupt('return', _context.sent);\n\n                case 9:\n                    _context.next = 11;\n                    return (0, _effects.put)({ type: 'ADD_NUMBER_FAILURE' });\n\n                case 11:\n                    return _context.abrupt('return', _context.sent);\n\n                case 12:\n                case 'end':\n                    return _context.stop();\n            }\n        }\n    }, _marked, this);\n}\n\nfunction rootSaga() {\n    return _regenerator2.default.wrap(function rootSaga$(_context2) {\n        while (1) {\n            switch (_context2.prev = _context2.next) {\n                case 0:\n                    _context2.next = 2;\n                    return (0, _effects.all)([(0, _effects.takeLatest)('ADD_NUMBER_REQ', incrementAsync)]);\n\n                case 2:\n                case 'end':\n                    return _context2.stop();\n            }\n        }\n    }, _marked2, this);\n}\n\n//# sourceURL=webpack:///./src/saga/index.js?");
+eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n    value: true\n});\n\nvar _regenerator = __webpack_require__(/*! babel-runtime/regenerator */ \"./node_modules/babel-runtime/regenerator/index.js\");\n\nvar _regenerator2 = _interopRequireDefault(_regenerator);\n\nexports.incrementAsync = incrementAsync;\nexports.default = rootSaga;\n\nvar _effects = __webpack_require__(/*! redux-saga/effects */ \"./node_modules/redux-saga/dist/redux-saga-effects-npm-proxy.esm.js\");\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }\n\nvar _marked = /*#__PURE__*/_regenerator2.default.mark(incrementAsync),\n    _marked2 = /*#__PURE__*/_regenerator2.default.mark(rootSaga);\n\nfunction incrementAsync() {\n    var number;\n    return _regenerator2.default.wrap(function incrementAsync$(_context) {\n        while (1) {\n            switch (_context.prev = _context.next) {\n                case 0:\n                    _context.next = 2;\n                    return (0, _effects.call)(function () {\n                        return new Promise(function (resolve) {\n                            setTimeout(function () {\n                                resolve(Math.floor(Math.random() * 10));\n                            }, 1000);\n                        });\n                    });\n\n                case 2:\n                    number = _context.sent;\n\n                    console.log(number);\n\n                    if (!number) {\n                        _context.next = 10;\n                        break;\n                    }\n\n                    _context.next = 7;\n                    return (0, _effects.put)({ type: 'ADD_NUMBER_SUC', number: number });\n\n                case 7:\n                    return _context.abrupt('return', _context.sent);\n\n                case 10:\n                    _context.next = 12;\n                    return (0, _effects.put)({ type: 'ADD_NUMBER_FAILURE' });\n\n                case 12:\n                    return _context.abrupt('return', _context.sent);\n\n                case 13:\n                case 'end':\n                    return _context.stop();\n            }\n        }\n    }, _marked, this);\n}\n\nfunction rootSaga() {\n    return _regenerator2.default.wrap(function rootSaga$(_context2) {\n        while (1) {\n            switch (_context2.prev = _context2.next) {\n                case 0:\n                    _context2.next = 2;\n                    return (0, _effects.all)([(0, _effects.takeLatest)('ADD_NUMBER_REQ', incrementAsync)]);\n\n                case 2:\n                case 'end':\n                    return _context2.stop();\n            }\n        }\n    }, _marked2, this);\n}\n\n//# sourceURL=webpack:///./src/saga/index.js?");
 
 /***/ })
 

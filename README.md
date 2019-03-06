@@ -51,7 +51,7 @@ npm i redux
 npm i react-redux
 ```
 只需吧服务端和客户端两个入口都用provide包裹起来就行
-### Tag 3.2
+### Tag 3.3
 集成redux-saga
 因为redux-saga 运用了generator
 运行后报错：
@@ -75,3 +75,5 @@ npm i --save-dev babel-plugin-transform-runtime
   ]
 }
 ```
+### Tag 3.4
+引入seamless-immutable 和 reduxsauce

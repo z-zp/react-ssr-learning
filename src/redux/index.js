@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux'
-import add from './add'
+import add from './addRedux'
 
 const shoppingCart = combineReducers({
-    add,
+    add
 })
 
   
