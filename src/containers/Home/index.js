@@ -1,34 +1,29 @@
 import React, { Component } from 'react'
 import Header from '../../conponents/Header'
 import { connect } from 'react-redux'
+import Loading from '../../conponents/Loading'
 class Home extends Component {
   constructor(props) {
     super(props)
-    this.state = {
-      loading: ''
-    }
   }
   componentDidUpdate(prevProps) {
     const nextProps = this.props
 
     if (!prevProps.add.fetching && nextProps.add.fetching) {
-      this.setState({
-        loading: 'loading ...'
-      })
+      // 加载中 TODO something...
+      
     }
 
     if (prevProps.add.fetching && !nextProps.add.fetching) {
 
       if (!prevProps.add.error && !nextProps.add.error) {
-        this.setState({
-          loading: 'loading success'
-        })
+        // 加载成功 TODO something...
+        
       }
 
       if (!prevProps.add.error && nextProps.add.error) {
-        this.setState({
-          loading: 'loading error'
-        })
+        // 加载失败 TODO something...
+
       }
     }
   }
@@ -40,14 +35,13 @@ class Home extends Component {
 
   render() {
     const { pathname } = this.props.location
-    const { number } = this.props.add
-    const { loading } = this.state
+    const { number:data,fetching,error } = this.props.add
     return (
       <div>
         <Header pathname={pathname} />
         <div>
-          <h3>{number}</h3>
-          <div>{this.state.loading}</div>
+          <h3>{data || 0}</h3>
+          <Loading fetching={fetching} error={error} data={data}/>
           <button className={'hellobtn'} onClick={() => { this.onClick() }}>点我</button>
         </div>
       </div>

@@ -1,7 +1,7 @@
 
 import Immutable from 'seamless-immutable'
 import { createReducer, createActions } from 'reduxsauce'
-
+// import {Map} from 'immutable'
 const { Types, Creators } = createActions({
     addNumberReq: ['params'],
     addNumberSuc: ['params'],
@@ -10,22 +10,26 @@ const { Types, Creators } = createActions({
 
 export const AddNumberTypes = Types
 const INITIAL_STATE = Immutable({
-    number:0,
+    number:null,
     fetching:false,
-    error:null
+    error:null,
+    a:{b:'123'}
 })
 
 export const request = (state, action) => {
-    return state.merge({ fetching: true, error: null })
+    return state.set('fetching', true)
+                .set('error',false)
 }
 export const success = (state, action) => {
-    let  {number} = action
-    let {number:oldNumber} = {...state}
-    number = number + oldNumber
-    return state.merge({number, fetching: false, error: null })
+    let {number} = action
+    function add (x, y) { return x + y }
+    return state.set('fetching', false)
+                .set('error',false)
+                .updateIn(['number'],add,number)
 }
 export const failure = (state, action) => {
-    return state.merge({ fetching: false, error: true })
+    return state.set('fetching', false)
+                .set('error',true)
 }
 
 const reducer =  createReducer(INITIAL_STATE, {

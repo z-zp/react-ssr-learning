@@ -77,3 +77,4 @@ npm i --save-dev babel-plugin-transform-runtime
 ```
 ### Tag 3.4
 引入seamless-immutable 和 reduxsauce
+seamless-immutable是简化版的immutable
