@@ -1,10 +1,20 @@
 import React, { Component } from 'react'
 import Header from '../../conponents/Header'
 import { connect } from 'react-redux'
+import {AddNumberTypes} from '../../redux/addRedux'
+
 import Loading from '../../conponents/Loading'
+import styles from './index.css'
 class Home extends Component {
   constructor(props) {
     super(props)
+  }
+  componentWillMount(){
+    
+    if(styles._getCss){
+     
+      // console.log(styles, this.props.staticContext)
+    }
   }
   componentDidUpdate(prevProps) {
     const nextProps = this.props
@@ -30,14 +40,14 @@ class Home extends Component {
 
 
   onClick = () => {
-    this.props.addAction({ type: 'ADD_NUMBER_REQ' })
+    this.props.addAction({ type: AddNumberTypes })
   }
 
   render() {
     const { pathname } = this.props.location
     const { number:data,fetching,error } = this.props.add
     return (
-      <div>
+      <div className={styles.div}>
         <Header pathname={pathname} />
         <div>
           <h3>{data || 0}</h3>
@@ -56,7 +66,7 @@ const mapStateToProps = (state) => {
 }
 const mapDispatchToProps = (dispatch) => {
   return {
-    addAction: (...arg) => dispatch(...arg),
+    addAction: (...arg) => dispatch({type:AddNumberTypes.ADD_NUMBER_REQ,...arg}),
   }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Home)

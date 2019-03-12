@@ -78,3 +78,6 @@ npm i --save-dev babel-plugin-transform-runtime
 ### Tag 3.4
 引入seamless-immutable 和 reduxsauce
 seamless-immutable是简化版的immutable
+
+### Tag 3.5 
+css-loader 要用1.0得，因为bable-loader 8.0做了升级

@@ -2,7 +2,7 @@ import {renderToString} from 'react-dom/server';
 import React from 'react';
 import {StaticRouter} from 'react-router-dom'
 import Router from '../src/Routes'
-export const render = (req, res)=>{
+export const render = (req)=>{
     const content = renderToString((
         <StaticRouter location={req.path}>
             {Router}

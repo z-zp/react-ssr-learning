@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import Header from '../../conponents/Header'
 import { connect } from 'react-redux'
 import Loading from '../../conponents/Loading'
+import {AddNumberTypes} from '../../redux/addRedux'
+
 class Login extends Component {
   constructor(props) {
     super(props)
@@ -30,7 +32,7 @@ class Login extends Component {
 
 
   onClick = () => {
-    this.props.addAction({ type: 'ADD_NUMBER_REQ' })
+    this.props.addAction({})
   }
 
   render() {
@@ -56,7 +58,7 @@ const mapStateToProps = (state) => {
 }
 const mapDispatchToProps = (dispatch) => {
   return {
-    addAction: (...arg) => dispatch(...arg),
+    addAction: (...arg) => dispatch({type:AddNumberTypes.ADD_NUMBER_REQ,...arg}),
   }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Login)
