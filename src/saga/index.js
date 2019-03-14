@@ -8,12 +8,13 @@ import {
 import api from '../api/api'
 import {AddNumberTypes} from '../redux/addRedux'
 
-export function* getAddNumber(state, actions) {
+export function* getAddNumber(api, actions) {
   try {
-    const data = yield call(api.getNumber)
+    const data = yield call(api.getNumber,actions)
     const {number} = data.data
     return yield put({type: 'ADD_NUMBER_SUC',number})
   } catch (err) {
+
     return yield put({
       type: 'ADD_NUMBER_FAILURE'
     })
@@ -22,7 +23,7 @@ export function* getAddNumber(state, actions) {
 
 export default function* rootSaga() {
   yield all([
-    takeLatest(AddNumberTypes.ADD_NUMBER_REQ, getAddNumber)
+    takeLatest(AddNumberTypes.ADD_NUMBER_REQ, getAddNumber,api)
   ])
 
 }

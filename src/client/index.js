@@ -1,16 +1,24 @@
-import React from 'react'
+import React,{Fragment} from 'react'
 import ReactDom from 'react-dom'
-import { BrowserRouter } from 'react-router-dom'
-import Routes from '../Routes'
-import reducer from '../redux'
+import { BrowserRouter,Route } from 'react-router-dom'
+import routes from '../Routes'
 import { Provider } from 'react-redux'
-import { createStore } from 'redux'
-const store = createStore(reducer)
+import {getClientStore} from '../store'
+const store = getClientStore()
 const App = () => {
   return (
     <Provider store={store}>
-      <BrowserRouter>{Routes}</BrowserRouter>
+        <BrowserRouter>       
+        <div>
+          {
+            routes.map(route =>(
+              <Route {...route} />
+            ))
+          }
+      </div>
+      </BrowserRouter>
     </Provider>
+      
   )
 }
 ReactDom.hydrate(<App />, document.getElementById('root'))

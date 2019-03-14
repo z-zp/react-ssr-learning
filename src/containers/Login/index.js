@@ -61,4 +61,7 @@ const mapDispatchToProps = (dispatch) => {
     addAction: (...arg) => dispatch({type:AddNumberTypes.ADD_NUMBER_REQ,...arg}),
   }
 }
+Login.loadData = ()=>{
+
+}
 export default connect(mapStateToProps, mapDispatchToProps)(Login)

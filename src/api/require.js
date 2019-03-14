@@ -5,14 +5,16 @@
  *
  * @return {object}          The parsed JSON from the request
  */
-const baseUrl = {}
+import axios from 'axios'
+
+const baseUrl='http://39.105.161.0'
 function parseJSON(response) {
     if (response.status === 204 || response.status === 205) {
       return null;
     }
-    return response.json();
+    console.log('response',response.data)
+    return response.data;
   }
-  
   /**
    * Checks if a network request came back fine, and throws an error if not
    *
@@ -21,7 +23,6 @@ function parseJSON(response) {
    * @return {object|undefined} Returns either the response, or throws an error
    */
   function checkStatus(response) {
-    
     if (response.status >= 200 && response.status < 300) {
       
       return response;
@@ -40,22 +41,27 @@ function parseJSON(response) {
    * @return {object}           The response data
    */
   export default function request(url, options) {
-    return fetch(url, options)
+    return axios(url, options)
       .then(checkStatus)
       .then(parseJSON);
   }
   
   export const get = (url, params)=>{
-    if (params) {  
+    let {obj,server} = params
+    
+    server && (url = baseUrl+url)
+    console.log('getget',obj,server,url,params)
+    if (obj) {  
         let paramsArray = [];  
         //拼接参数  
-        Object.keys(params).forEach(key => paramsArray.push(key + '=' + params[key]))  
+        Object.keys(obj).forEach(key => paramsArray.push(key + '=' + obj[key]))  
         if (url.search(/\?/) === -1) {  
             url += '?' + paramsArray.join('&')  
         } else {  
             url += '&' + paramsArray.join('&')  
         }  
-    }  
+    } 
+    console.log(url) 
     return request(url)
   }
   export const post = (url, options)=>{

@@ -1,20 +1,24 @@
 import React, { Component } from 'react'
 import Header from '../../conponents/Header'
 import { connect } from 'react-redux'
+import api from '../../api/api'
 import {AddNumberTypes} from '../../redux/addRedux'
-
+import {addNumberAction} from '../../redux/actions'
 import Loading from '../../conponents/Loading'
 import styles from './index.css'
 class Home extends Component {
   constructor(props) {
     super(props)
   }
+  
   componentWillMount(){
-    
     if(styles._getCss){
-     
+      
       // console.log(styles, this.props.staticContext)
     }
+  }
+  componentDidMount(){
+    this.props.addAction()
   }
   componentDidUpdate(prevProps) {
     const nextProps = this.props
@@ -40,7 +44,7 @@ class Home extends Component {
 
 
   onClick = () => {
-    this.props.addAction({ type: AddNumberTypes })
+    this.props.addAction()
   }
 
   render() {
@@ -66,7 +70,20 @@ const mapStateToProps = (state) => {
 }
 const mapDispatchToProps = (dispatch) => {
   return {
-    addAction: (...arg) => dispatch({type:AddNumberTypes.ADD_NUMBER_REQ,...arg}),
+    addAction: (arg) => dispatch(addNumberAction(arg)),
   }
+}
+
+Home.loadData = (store)=>{
+  return new Promise((resolve, reject)=>{
+    resolve(api.getNumber({obj:{}, server:true}))
+  }).then((data)=>{
+    return store.dispatch({
+      type: AddNumberTypes.ADD_NUMBER_REQ,
+      obj:{number:data.data.number},
+      server:true
+    })
+    
+  })
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Home)

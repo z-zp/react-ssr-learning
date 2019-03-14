@@ -79,5 +79,31 @@ npm i --save-dev babel-plugin-transform-runtime
 引入seamless-immutable 和 reduxsauce
 seamless-immutable是简化版的immutable
 
-### Tag 3.5 
+### Tag 3.5
+简单的网络请求和css引入 
 css-loader 要用1.0得，因为bable-loader 8.0做了升级
+componentDidMount 只会再客户端执行不会在服务端执行
+
+https://reacttraining.com/react-router/web/guides/server-rendering
+
+fetch 在node 上报undefind 换成了axios
+注意给自己的服务器接口打开允许跨域
+```
+app.all('/api/number', function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
+  res.header("Access-Control-Allow-Headers", "X-Requested-With");
+  res.header('Access-Control-Allow-Headers', 'Content-Type');
+  next();
+});
+```
+
+客户端运行
+ * /api/number = http://39.105.161.0/api/number
+ 
+服务端运行
+ * /api/number = 根目录/api/number
+
+ 所以在请求的时候要区分是服务端还是客户端
+Tag 3.5.1
+脱水和注水
