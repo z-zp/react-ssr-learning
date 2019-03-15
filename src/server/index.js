@@ -11,7 +11,6 @@ app.use(express.static('public'))
 
 app.use('/api',proxy('http://39.105.161.0',{
     proxyReqPathResolver: function (req) {
-        console.log(req.url)
         return '/api'+req.url
     }
 }));
@@ -25,9 +24,30 @@ app.get('*', function(req, res) {
         }
     })
     Promise.all(promises).then((data)=>{
-        console.log('store',store,data)
-        console.log(store.getState())
-        res.send(render(store,routes,req))
+        const context = {}
+        const html = render(store,routes,req,context)
+        if(context.action==='REPLACE'){
+            res.redirect(301,context.url)           
+        }
+        else if(context.noPage){
+            res.status(404)
+            res.send(html)
+        }else{
+            res.send(html)
+        }
+        
+    }).catch(()=>{
+        const context = {}
+        const html = render(store,routes,req,context)
+        if(context.action==='REPLACE'){
+            res.redirect(301,context.url)           
+        }
+        else if(context.noPage){
+            res.status(404)
+            res.send(html)
+        }else{
+            res.send(html)
+        }
     })
 }) 
 

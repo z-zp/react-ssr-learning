@@ -1,21 +1,16 @@
 import {renderToString} from 'react-dom/server';
 import React from 'react';
 import {StaticRouter,Route} from 'react-router-dom'
+import {renderRoutes} from 'react-router-config'
 
 
 import {Provider} from 'react-redux'
 
-export const render = (store,routes,req)=>{
+export const render = (store,routes,req,context)=>{
     const content = renderToString((
       <Provider store={store}>
-        <StaticRouter location={req.path} context={{}}>
-        <div>
-          {
-            routes.map(route =>{
-              return <Route {...route} />
-            })
-          }
-        </div>
+        <StaticRouter location={req.path} context={context}>
+          {renderRoutes(routes)}
         </StaticRouter>
       </Provider>
     ))

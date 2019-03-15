@@ -6,7 +6,7 @@ import {
   all
 } from 'redux-saga/effects'
 import api from '../api/api'
-import {AddNumberTypes} from '../redux/addRedux'
+import {AddNumberTypes} from '../redux/addReducer'
 
 export function* getAddNumber(api, actions) {
   try {

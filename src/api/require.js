@@ -12,7 +12,6 @@ function parseJSON(response) {
     if (response.status === 204 || response.status === 205) {
       return null;
     }
-    console.log('response',response.data)
     return response.data;
   }
   /**
@@ -31,6 +30,11 @@ function parseJSON(response) {
     error.response = response;
     throw error;
   }
+
+  function errorUrl(err){
+    const error = new Error(err);
+    throw error;
+  }
   
   /**
    * Requests a URL, returning a promise
@@ -43,14 +47,14 @@ function parseJSON(response) {
   export default function request(url, options) {
     return axios(url, options)
       .then(checkStatus)
-      .then(parseJSON);
+      .then(parseJSON)
+      .catch(errorUrl)
   }
   
   export const get = (url, params)=>{
     let {obj,server} = params
     
     server && (url = baseUrl+url)
-    console.log('getget',obj,server,url,params)
     if (obj) {  
         let paramsArray = [];  
         //拼接参数  
@@ -61,7 +65,6 @@ function parseJSON(response) {
             url += '&' + paramsArray.join('&')  
         }  
     } 
-    console.log(url) 
     return request(url)
   }
   export const post = (url, options)=>{

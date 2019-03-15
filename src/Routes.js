@@ -1,22 +1,28 @@
-import React from 'react'
-import { Route } from 'react-router-dom'
 import Home from './containers/Home'
 import Login from './containers/Login'
-
-export default [
-    {
-        path:'/',
-        component: Home,
-        exact:true,
-        loadData:Home.loadData,
-        key:'home',
-    },
-    {
-        path:'/login',
-        component: Login,
-        exact:true,
-        loadData:Login.loadData,
-        key:'login'
-    }
+import NoPage from './conponents/noPage'
+import App from './App'
+export default [{
+    path:'/',
+    component:App,
+    routes:[
+        {
+            path:'/',
+            component: Home,
+            exact:true,
+            loadData:Home.loadData,
+            key:'home',
+        },
+        {
+            path:'/login',
+            component: Login,
+            exact:true,
+            loadData:Login.loadData,
+            key:'login'
+        },
+        {
+            component: NoPage,
+        }
+    ]
+}
 ]
-

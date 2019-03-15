@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import Header from '../../conponents/Header'
 import { connect } from 'react-redux'
 import Loading from '../../conponents/Loading'
-import {AddNumberTypes} from '../../redux/addRedux'
+import {AddNumberTypes} from '../../redux/addReducer'
 
 class Login extends Component {
   constructor(props) {
@@ -39,14 +39,11 @@ class Login extends Component {
     const { pathname } = this.props.location
     const { number:data,fetching,error } = this.props.add
     return (
-      <div>
-        <Header pathname={pathname} />
         <div>
           <h3>{data || 0}</h3>
           <Loading fetching={fetching} error={error} data={data}/>
           <button className={'hellobtn'} onClick={() => { this.onClick() }}>点我</button>
         </div>
-      </div>
     )
   }
 }

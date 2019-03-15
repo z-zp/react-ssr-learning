@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import Header from '../../conponents/Header'
 import { connect } from 'react-redux'
 import api from '../../api/api'
-import {AddNumberTypes} from '../../redux/addRedux'
+import {AddNumberTypes} from '../../redux/addReducer'
 import {addNumberAction} from '../../redux/actions'
 import Loading from '../../conponents/Loading'
 import styles from './index.css'
@@ -52,12 +52,9 @@ class Home extends Component {
     const { number:data,fetching,error } = this.props.add
     return (
       <div className={styles.div}>
-        <Header pathname={pathname} />
-        <div>
           <h3>{data || 0}</h3>
           <Loading fetching={fetching} error={error} data={data}/>
           <button className={'hellobtn'} onClick={() => { this.onClick() }}>点我</button>
-        </div>
       </div>
     )
   }
@@ -79,7 +76,7 @@ Home.loadData = (store)=>{
     resolve(api.getNumber({obj:{}, server:true}))
   }).then((data)=>{
     return store.dispatch({
-      type: AddNumberTypes.ADD_NUMBER_REQ,
+      type: AddNumberTypes.SERVER_ADD_NUMBER_REQ,
       obj:{number:data.data.number},
       server:true
     })
