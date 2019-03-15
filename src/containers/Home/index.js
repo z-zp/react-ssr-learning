@@ -1,22 +1,17 @@
-import React, { Component } from 'react'
-import Header from '../../conponents/Header'
+import React, { Component,Fragment } from 'react'
 import { connect } from 'react-redux'
+import {Helmet} from 'react-helmet'
 import api from '../../api/api'
 import {AddNumberTypes} from '../../redux/addReducer'
 import {addNumberAction} from '../../redux/actions'
 import Loading from '../../conponents/Loading'
 import styles from './index.css'
+import WithStyles from '../common/WithStyles'
 class Home extends Component {
   constructor(props) {
     super(props)
   }
   
-  componentWillMount(){
-    if(styles._getCss){
-      
-      // console.log(styles, this.props.staticContext)
-    }
-  }
   componentDidMount(){
     this.props.addAction()
   }
@@ -51,11 +46,17 @@ class Home extends Component {
     const { pathname } = this.props.location
     const { number:data,fetching,error } = this.props.add
     return (
+      <Fragment>
+      <Helmet>
+        <title>home</title>
+        <meta name='description' content={'这是home'}></meta>
+      </Helmet>
       <div className={styles.div}>
           <h3>{data || 0}</h3>
           <Loading fetching={fetching} error={error} data={data}/>
           <button className={'hellobtn'} onClick={() => { this.onClick() }}>点我</button>
       </div>
+      </Fragment>
     )
   }
 }
@@ -71,7 +72,9 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-Home.loadData = (store)=>{
+
+const ExportHome = connect(mapStateToProps, mapDispatchToProps)(WithStyles(Home,styles))
+ExportHome.loadData = (store)=>{
   return new Promise((resolve, reject)=>{
     resolve(api.getNumber({obj:{}, server:true}))
   }).then((data)=>{
@@ -83,4 +86,4 @@ Home.loadData = (store)=>{
     
   })
 }
-export default connect(mapStateToProps, mapDispatchToProps)(Home)
+export default ExportHome

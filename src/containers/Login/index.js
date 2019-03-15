@@ -1,8 +1,10 @@
-import React, { Component } from 'react'
-import Header from '../../conponents/Header'
+import React, { Component,Fragment } from 'react'
+import {Helmet} from 'react-helmet'
 import { connect } from 'react-redux'
 import Loading from '../../conponents/Loading'
 import {AddNumberTypes} from '../../redux/addReducer'
+import styles from './index.css'
+import WithStyles from '../common/WithStyles'
 
 class Login extends Component {
   constructor(props) {
@@ -39,11 +41,17 @@ class Login extends Component {
     const { pathname } = this.props.location
     const { number:data,fetching,error } = this.props.add
     return (
-        <div>
+      <Fragment>
+        <Helmet>
+          <title>Login</title>
+          <meta name='description' content={'这是Login'}></meta>
+        </Helmet>
+        <div className={styles.div}>
           <h3>{data || 0}</h3>
           <Loading fetching={fetching} error={error} data={data}/>
           <button className={'hellobtn'} onClick={() => { this.onClick() }}>点我</button>
         </div>
+        </Fragment>
     )
   }
 }
@@ -61,4 +69,8 @@ const mapDispatchToProps = (dispatch) => {
 Login.loadData = ()=>{
 
 }
-export default connect(mapStateToProps, mapDispatchToProps)(Login)
+const ExportLogin = connect(mapStateToProps, mapDispatchToProps)(WithStyles(Login,styles))
+ExportLogin.loadData = ()=>{
+
+}
+export default ExportLogin

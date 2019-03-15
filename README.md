@@ -107,3 +107,14 @@ app.all('/api/number', function(req, res, next) {
  所以在请求的时候要区分是服务端还是客户端
 Tag 3.5.1
 脱水和注水
+服务器渲染css
+
+seo
+
+title
+meta
+
+文字  (拿出你改论文的本事来原创)
+图片 （拿出你修图的本事原创）
+连接 外连多内连相关性强
+react-helmet 

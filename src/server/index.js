@@ -1,6 +1,7 @@
 import express from 'express'
 import {render} from './utils'
 import proxy from 'express-http-proxy'
+
 import {getStore} from '../store'
 import {matchRoutes} from 'react-router-config'
 import routes from '../Routes'
@@ -24,7 +25,7 @@ app.get('*', function(req, res) {
         }
     })
     Promise.all(promises).then((data)=>{
-        const context = {}
+        const context = {css:[]}
         const html = render(store,routes,req,context)
         if(context.action==='REPLACE'){
             res.redirect(301,context.url)           
