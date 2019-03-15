@@ -14,8 +14,30 @@ npm run start1
 npm run dev
 ```
 ###Tag 2.1 
+主要通过ReactDOMServer方法将react编译成字符串
+```
+app.get('/', function(req, res) {
+    res.send(
+        `<div>${ReactDOMServer.renderToString(<Home />)}</div>
+        <script src='/index.js'></script>
+        `
+    );
+});
+```
+
+
 同构js运行原理
 ###Tag 2.2 
+服务器是没有事件的，当服务器将页面渲染好以后，客户端再次执行，将事件绑定
+```
+import React from 'react'
+import ReactDom from 'react-dom'
+import Home from '../containers/Home'
+
+ReactDom.hydrate(<Home/>,document.getElementById('root'))
+
+```
+
 简单的demo
 ###Tag 2.3 
 整理webpack
@@ -41,6 +63,17 @@ stage-0，它包含stage-1, stage-2以及stage-3的所有功能，同时还另�
 添加路由 
 ```
 npm i react-router-dom
+```
+客户端
+```
+ <BrowserRouter>{Routes}</BrowserRouter>
+
+```
+服务端
+```
+<StaticRouter location={req.path}>
+    {Router}
+</StaticRouter>
 ```
 ### Tag 3.1
 多路由跳转及代码整理
@@ -107,7 +140,34 @@ app.all('/api/number', function(req, res, next) {
  所以在请求的时候要区分是服务端还是客户端
 Tag 3.5.1
 脱水和注水
+```
+<script>
+  window.context={
+    state:${JSON.stringify(store.getState())}
+  }
+</script>
+
+
+export const getClientStore = ()=>{  // 使每个用户store互相独立
+    const defaultState = Immutable(window.context.state)
+    const store =  createStore(reducer,defaultState,applyMiddleware(sagaMiddleware))
+    sagaMiddleware.run(rootSaga)
+    return store
+}
+```
 服务器渲染css
+```
+componentWillMount(){
+  // 服务器端渲染
+  if(styles._getCss){
+    this.props.staticContext.css.push(styles._getCss())
+  }
+}   
+
+const css = context.css.length?context.css.join('/n'):{}
+ 
+<style>${css}</style>
+```
 
 seo
 
@@ -118,3 +178,26 @@ meta
 图片 （拿出你修图的本事原创）
 连接 外连多内连相关性强
 react-helmet 
+客户端
+```
+import {Helmet} from 'react-helmet'
+
+<Helmet>
+  <title>home</title>
+  <meta name='description' content={'这是home'}></meta>
+</Helmet>
+```
+服务端
+```
+import {Helmet} from 'react-helmet'
+const helmet = Helmet.renderStatic()
+ <head>
+  ${helmet.title.toString()}
+  ${helmet.meta.toString()}
+</head>
+```
+
+prerender
+
+next.js
+
